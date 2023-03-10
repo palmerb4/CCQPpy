@@ -1,9 +1,10 @@
+# external
 from abc import ABC, abstractmethod, abstractproperty
 import numpy as np
 import time
 
-def identity_proj_op(x):
-    return x
+# internal
+from . import solution_spaces as ss
 
 class CCQPSolverBase(ABC):
     """Abstract base class for constrained quadratic programming problems."""
@@ -13,7 +14,7 @@ class CCQPSolverBase(ABC):
         pass
 
     @abstractmethod
-    def solve(self, A, b, x0=None, convex_proj_op=identity_proj_op):
+    def solve(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
         """
         f(x) = x^T A x - x^T b 
 
@@ -26,7 +27,7 @@ class CCQPSolverBase(ABC):
             x0 : {array-like, matrix} of shape (n_unknowns x 1)
                 Initial guess for the solution x. Defaults to all zeros. 
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns x 1) \
-                to its projection x_proj also of shape (n_unknowns x 1). Defaults to identity_proj_op.
+                to its projection x_proj also of shape (n_unknowns x 1). Defaults to IdentityProjOp.
                 projection opperator taking x to its projection 
                 onto the feasible set.
 
@@ -83,7 +84,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         self._solution_time = None   
         self._solution_num_matrix_vector_mults = None
 
-    def solve(self, A, b, x0=None, convex_proj_op=identity_proj_op):
+    def solve(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
         """
         f(x) = x^T A x - x^T b 
 
@@ -96,7 +97,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
             x0 : {array-like, matrix} of shape (n_unknowns x 1)
                 Initial guess for the solution x. Defaults to all zeros. 
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns x 1) \
-                to its projection x_proj also of shape (n_unknowns x 1). Defaults to identity_proj_op.
+                to its projection x_proj also of shape (n_unknowns x 1). Defaults to IdentityProjOp.
                 projection opperator taking x to its projection 
                 onto the feasible set.
 
@@ -111,7 +112,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         else:
             pass
 
-    def _solve_method1(self, A, b, x0=None, convex_proj_op=identity_proj_op):
+    def _solve_method1(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
         """APDG with antirelaxation from Maxhar 2015"""
         time_start = time.time()
         self._checkSolveInput(A, b, x0)

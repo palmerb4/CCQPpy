@@ -1,3 +1,4 @@
 __version__ = "0.0.0"
 
-from .module import *
+from .solution_spaces import *
+from .solvers import *
