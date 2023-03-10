@@ -193,7 +193,7 @@ class ConeProjOp(ProjOpBase):
         if self.aspect_ratio * x[-1] >= x_norm:
             return x
         elif -x[-1] / self.aspect_ratio >= x_norm:
-            return 0
+            return np.zeros_like(x)
         else:
-            (x[-1] + self.aspect_ratio * x_norm) / (self.aspect_ratio**2 + 1) \
+            return (x[-1] + self.aspect_ratio * x_norm) / (self.aspect_ratio**2 + 1) \
                 * np.concatenate((x[:-1] / x_norm, [-self.aspect_ratio]))

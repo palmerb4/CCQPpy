@@ -6,6 +6,7 @@ import time
 # internal
 from . import solution_spaces as ss
 
+
 class CCQPSolverBase(ABC):
     """Abstract base class for constrained quadratic programming problems."""
 
@@ -61,6 +62,7 @@ class CCQPSolverBase(ABC):
     def solution_num_matrix_vector_mults(self):
         pass
 
+
 class CCQPSolverAPGD(CCQPSolverBase):
     """Concrete implementation of the APGD algorithm
 
@@ -81,7 +83,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         # initialize the internal data
         self._solution_residual = None
         self._solution_converged = None
-        self._solution_time = None   
+        self._solution_time = None
         self._solution_num_matrix_vector_mults = None
 
     def solve(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
@@ -139,7 +141,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
         xkdiffNorm2 = np.linalg.norm(xkdiff)
         mv_count += 1
-        
+
         Lk = AxkdiffNorm2 / xkdiffNorm2
         tk = 1.0 / Lk
 
@@ -154,12 +156,12 @@ class CCQPSolverAPGD(CCQPSolverBase):
                 break
 
             gk = Ayk + b
-            
+
             # line 8 of Mazhar 2015
             xkp1 = convex_proj_op(yk - tk * gk)
 
             rightTerm1 = yk.dot(Ayk) * 0.5
-            rightTerm2 = yk.dot(b)    
+            rightTerm2 = yk.dot(b)
 
             while True:
                 # calc Lifshitz condition
@@ -173,11 +175,11 @@ class CCQPSolverAPGD(CCQPSolverBase):
                 leftTerm2 = xkp1.dot(b)
 
                 xkdiff = xkp1 - yk
-                rightTerm3 = gk.dot(xkdiff) 
+                rightTerm3 = gk.dot(xkdiff)
                 rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
                 if (leftTerm1 + leftTerm2) <= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
                     break
-                
+
                 # line 10 & 11 of Mazhar 2015
                 Lk *= 2
                 tk = 1.0 / Lk
@@ -186,13 +188,15 @@ class CCQPSolverAPGD(CCQPSolverBase):
                 xkp1 = convex_proj_op(yk - tk * gk)
 
             # line 14-16 of Mazhar 2015
-            thetakp1 = 0.5 * (-thetak * thetak + thetak * np.sqrt(4 + thetak * thetak))
+            thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                              np.sqrt(4 + thetak * thetak))
             betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
             ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
 
             # check convergence, line 17 and Eq 25 of Mazhar 2015
             gd = 1e-6
-            res = 1.0 / (3 * num_unknowns * gd) * (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b)))
+            res = 1.0 / (3 * num_unknowns * gd) * \
+                (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b)))
 
             # line 18-21 of Mazhar 2015
             if res < resmin:
@@ -228,7 +232,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
     @property
     def solution(self):
-        return self._solution    
+        return self._solution
 
     @property
     def solution_residual(self):
