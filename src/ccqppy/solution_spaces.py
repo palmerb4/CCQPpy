@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 class ProjOpBase(ABC):
-    def __init__(self):
+    def __init__(self, embedded_dimension):
         pass
 
     @abstractmethod
@@ -16,12 +16,12 @@ class ProjOpBase(ABC):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         pass
@@ -53,7 +53,7 @@ class ProjOpBase(ABC):
 
 
 class IdentityProjOp(ProjOpBase):
-    def __init__(self):
+    def __init__(self, embedded_dimension):
         pass
 
     def __call__(self, x):
@@ -62,20 +62,23 @@ class IdentityProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         return x
 
 
 class LowerBoundProjOp(ProjOpBase):
-    def __init__(self, lower_bound):
-        self.lower_bound = lower_bound
+    def __init__(self, embedded_dimension, lower_bound=None):
+        if lower_bound is not None:
+            self.lower_bound = lower_bound
+        else:
+            self.lower_bound = -np.ones(embedded_dimension)
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -83,12 +86,12 @@ class LowerBoundProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         do_proj_mask = x < self.lower_bound
@@ -96,8 +99,11 @@ class LowerBoundProjOp(ProjOpBase):
 
 
 class UpperBoundProjOp(ProjOpBase):
-    def __init__(self, upper_bound):
-        self.upper_bound = upper_bound
+    def __init__(self, embedded_dimension, upper_bound=None):
+        if upper_bound is not None:
+            self.upper_bound = upper_bound
+        else:
+            self.upper_bound = np.ones(embedded_dimension)
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -105,12 +111,12 @@ class UpperBoundProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         do_proj_mask = x > self.upper_bound
@@ -118,11 +124,19 @@ class UpperBoundProjOp(ProjOpBase):
 
 
 class BoxProjOp(ProjOpBase):
-    def __init__(self, lower_bound, upper_bound):
-        assert(np.all(upper_bound > lower_bound),
-               "Upper bound must be greater than the lower bound")
-        self.lower_bound = lower_bound
-        self.upper_bound = upper_bound
+    def __init__(self, embedded_dimension, lower_bound=None, upper_bound=None):
+        if lower_bound is not None:
+            self.lower_bound = lower_bound
+        else:
+            self.lower_bound = -np.ones(embedded_dimension)
+
+        if upper_bound is not None:
+            self.upper_bound = upper_bound
+        else:
+            self.upper_bound = np.ones(embedded_dimension)
+
+        assert(np.all(self.upper_bound > self.lower_bound),
+               "Upper bound must be greater than the lower bound.")
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -130,12 +144,12 @@ class BoxProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         do_upper_proj_mask = x > self.upper_bound
@@ -145,8 +159,13 @@ class BoxProjOp(ProjOpBase):
 
 
 class SphereProjOp(ProjOpBase):
-    def __init__(self, radius):
-        self.radius = radius
+    def __init__(self, embedded_dimension, radius=None):
+        if radius is not None:
+            self.radius = radius
+        else:
+            self.radius = 1
+
+        assert(self.radius > 0, "Radius must be positive")
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -154,12 +173,12 @@ class SphereProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         x_norm = np.linalg.norm(x)
@@ -170,9 +189,13 @@ class SphereProjOp(ProjOpBase):
 
 
 class ConeProjOp(ProjOpBase):
-    def __init__(self, aspect_ratio):
+    def __init__(self, embedded_dimension, aspect_ratio=None):
+        if aspect_ratio is not None:
+            self.aspect_ratio = aspect_ratio
+        else:
+            self.aspect_ratio = 1
+
         assert(aspect_ratio > 0, "Aspect ratio must be positive")
-        self.aspect_ratio = aspect_ratio
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -180,12 +203,12 @@ class ConeProjOp(ProjOpBase):
 
         Parameters
         ----------
-            x : {array-like, matrix} of shape (n_unknowns x 1)
+            x : {array-like, matrix} of shape (n_unknowns, 1)
                 value to project onto the feasible set
 
         Returns
         -------
-            x_proj : {array-like, matrix} of shape (n_unknowns x 1)
+            x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
         x_norm = np.linalg.norm(x)

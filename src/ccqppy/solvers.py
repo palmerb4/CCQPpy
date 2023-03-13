@@ -15,7 +15,7 @@ class CCQPSolverBase(ABC):
         pass
 
     @abstractmethod
-    def solve(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
+    def solve(self, A, b, x0=None, convex_proj_op=None):
         """
         f(x) = x^T A x - x^T b 
 
@@ -23,12 +23,12 @@ class CCQPSolverBase(ABC):
         ----------
             A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
                 Hessian matrix of f(x).
-            b : {array-like, matrix} of shape (n_unknowns x 1)
+            b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
-            x0 : {array-like, matrix} of shape (n_unknowns x 1)
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
                 Initial guess for the solution x. Defaults to all zeros. 
-            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns x 1) \
-                to its projection x_proj also of shape (n_unknowns x 1). Defaults to IdentityProjOp.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
                 projection opperator taking x to its projection 
                 onto the feasible set.
 
@@ -59,7 +59,7 @@ class CCQPSolverBase(ABC):
         pass
 
     @abstractproperty
-    def solution_num_matrix_vector_mults(self):
+    def solution_num_matrix_vector_multipliciations(self):
         pass
 
 
@@ -86,7 +86,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         self._solution_time = None
         self._solution_num_matrix_vector_mults = None
 
-    def solve(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
+    def solve(self, A, b, x0=None, convex_proj_op=None):
         """
         f(x) = x^T A x - x^T b 
 
@@ -94,13 +94,13 @@ class CCQPSolverAPGD(CCQPSolverBase):
         ----------
             A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
                 Hessian matrix of f(x).
-            b : {array-like, matrix} of shape (n_unknowns x 1)
+            b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
-            x0 : {array-like, matrix} of shape (n_unknowns x 1)
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
                 Initial guess for the solution x. Defaults to all zeros. 
-            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns x 1) \
-                to its projection x_proj also of shape (n_unknowns x 1). Defaults to IdentityProjOp.
-                projection opperator taking x to its projection 
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection opperator taking x to its projection 
                 onto the feasible set.
 
         Returns
@@ -108,14 +108,21 @@ class CCQPSolverAPGD(CCQPSolverBase):
         self : CCQPSolverAPGD
             The solved constrained convex quadratic problem.
         """
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
 
         if self.with_anti_relaxation:
-            self._solve_method1()
+            self._solve_method1(A, b, x0, convex_proj_op)
         else:
             pass
 
-    def _solve_method1(self, A, b, x0=None, convex_proj_op=ss.IdentityProjOp()):
-        """APDG with antirelaxation from Maxhar 2015"""
+    def _solve_method1(self, A, b, x0=None, convex_proj_op=None):
+        """APDG with antirelaxation from Mazhar 2015"""
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
         time_start = time.time()
         self._checkSolveInput(A, b, x0)
 
@@ -123,7 +130,6 @@ class CCQPSolverAPGD(CCQPSolverBase):
         mv_count = 0
 
         # set the initial guess if not given
-        num_unknowns = x0.shape[0]
         if x0 is None:
             x0 = np.zeros(num_unknowns)
 
