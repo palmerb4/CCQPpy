@@ -113,9 +113,10 @@ class CCQPSolverAPGD(CCQPSolverBase):
             convex_proj_op = ss.IdentityProjOp(num_unknowns)
 
         if self.with_anti_relaxation:
-            self._solve_method1(A, b, x0, convex_proj_op)
+            result = self._solve_method1(A, b, x0, convex_proj_op)
         else:
             pass
+        return result
 
     def _solve_method1(self, A, b, x0=None, convex_proj_op=None):
         """APDG with antirelaxation from Mazhar 2015"""
@@ -201,8 +202,8 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
             # check convergence, line 17 and Eq 25 of Mazhar 2015
             gd = 1e-6
-            res = 1.0 / (3 * num_unknowns * gd) * \
-                (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b)))
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) * \
+                (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
 
             # line 18-21 of Mazhar 2015
             if res < resmin:
@@ -224,8 +225,8 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
             # next iteration
             # swap the contents of pointers directly, be careful
-            yk.swap(ykp1)
-            xk.swap(xkp1)
+            yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+            xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
             thetak = thetakp1
 
         # line 32 of Maxhar 2015
@@ -233,8 +234,11 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
         self._solution_converged = mv_count < self.max_matrix_vector_multipliciations
         self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
         time_stop = time.time()
         self._solution_time = time_start - time_stop
+
+        return self
 
     @property
     def solution(self):
