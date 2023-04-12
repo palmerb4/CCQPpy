@@ -4,6 +4,7 @@ convex constrained quadratic programming problems"""
 # external
 import numpy as np
 from scipy.stats import wishart
+import matplotlib.pyplot as plt
 
 # internal
 from ccqppy import solvers
@@ -13,14 +14,14 @@ from ccqppy import solution_spaces as ss
 class BenchmarkRandomCCQP:
     """Benchmark each solver using an ensemble of randomly generated CCQPs"""
 
-    def __init__(self, solvers_to_benchmark, convex_proj_ops_to_benchmark, problem_sizes, 
-                 desired_residual_tol, max_matrix_vector_multipliciations=np.inf):
+    def __init__(self, solvers_to_benchmark, convex_proj_ops_to_benchmark, problem_sizes,
+                 desired_residual_tol, max_matrix_vector_multiplications=np.inf):
         # store the user input
         self.solvers_to_benchmark = solvers_to_benchmark
         self.convex_proj_ops_to_benchmark = convex_proj_ops_to_benchmark
         self.problem_sizes = problem_sizes
         self.desired_residual_tol = desired_residual_tol
-        self.max_matrix_vector_multipliciations = max_matrix_vector_multipliciations
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
 
         # initialize the internal data
         self._num_problems = problem_sizes.shape[0]
@@ -50,10 +51,11 @@ class BenchmarkRandomCCQP:
             A : {array-like, matrix} of shape (problem_size, problem_size)
                 Randomly generated hessian matrix.
             b : {array-like, matrix} of shape (problem_size, 1)   
-                Ranomy generated element of the range space of A.         
+                Randomly generated element of the range space of A.         
         """
 
-        A = wishart.rvs(problem_size, np.eye(problem_size), size = 1, random_state=seed)
+        A = wishart.rvs(problem_size, np.eye(
+            problem_size), size=1, random_state=seed)
         b = A.dot(np.random.rand(problem_size))
         return (A, b)
 
@@ -73,7 +75,7 @@ class BenchmarkRandomCCQP:
                     # initialize the solver and the projection op
                     # provide the bare minimum arguments, let everything else be default
                     solver_instance = solver(
-                        self.desired_residual_tol, self.max_matrix_vector_multipliciations)
+                        self.desired_residual_tol, self.max_matrix_vector_multiplications)
                     convex_proj_op_instance = convex_proj_op(problem_size)
 
                     # generate and run the problem
@@ -90,16 +92,46 @@ class BenchmarkRandomCCQP:
                     self._problem_time[solver_id, proj_id_id,
                                        problem_id] = result.solution_time
                     self._problem_num_matrix_vector_mults[solver_id, proj_id_id,
-                                                          problem_id] = result.solution_num_matrix_vector_multipliciations
+                                                          problem_id] = result.solution_num_matrix_vector_multiplications
 
     def process_results(self):
+        num_solvers = len(self.solvers_to_benchmark)
+        num_proj_ops = len(self.convex_proj_ops_to_benchmark)
+
+        fig, axs_left = plt.subplots(num_solvers, num_proj_ops, sharex='col', sharey='row',
+                                     gridspec_kw={'hspace': 0, 'wspace': 0})  # , constrained_layout = True
+
+        axs_left = axs_left.reshape([num_solvers, num_proj_ops])
+        axs_right = np.copy(axs_left)
+        for i in range(num_solvers):
+            for j in range(num_proj_ops):
+                axs_right[i, j] = axs_left[i, j].twinx()
+                axs_left[i, j].get_shared_y_axes().join(axs_left[i, j], axs_right[i, j])
+
+        for solver_id, solver in enumerate(self.solvers_to_benchmark):
+            for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
+                axs_left[solver_id, proj_id_id].plot(
+                    self.problem_sizes, self._problem_time[solver_id, proj_id_id, :], 'b')
+                axs_right[solver_id, proj_id_id].plot(
+                    self.problem_sizes, self._problem_num_matrix_vector_mults[solver_id, proj_id_id, :], 'r')
+
+        for i in range(num_solvers):
+            for j in range(num_proj_ops):
+                axs_left[i, j].yaxis.label.set_color('red')
+                axs_right[i, j].yaxis.label.set_color('blue')
+                axs_left[i, j].tick_params(axis='y', colors='red')
+                axs_right[i, j].tick_params(axis='y', colors='blue')
+                axs_left[i, j].label_outer()
+                axs_right[i, j].label_outer()
+
+        plt.show()
         pass
 
 
 if __name__ == '__main__':
     problem_sizes = np.linspace(2, 100, 50, dtype=int)
     desired_residual_tol = 1e-5
-    max_matrix_vector_multipliciations = 10000
+    max_matrix_vector_multiplications = 10000
 
     solvers_to_benchmark = [solvers.CCQPSolverAPGD]
     convex_proj_ops_to_benchmark = [ss.IdentityProjOp,
@@ -110,6 +142,6 @@ if __name__ == '__main__':
                                     ss.ConeProjOp]
 
     benchmark = BenchmarkRandomCCQP(solvers_to_benchmark, convex_proj_ops_to_benchmark,
-                                    problem_sizes, desired_residual_tol, max_matrix_vector_multipliciations)
+                                    problem_sizes, desired_residual_tol, max_matrix_vector_multiplications)
     benchmark.run()
     benchmark.process_results()

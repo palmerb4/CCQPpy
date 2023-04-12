@@ -29,8 +29,7 @@ class CCQPSolverBase(ABC):
                 Initial guess for the solution x. Defaults to all zeros. 
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-                projection opperator taking x to its projection 
-                onto the feasible set.
+                projection operator taking x to its projection onto the feasible set.
 
         Returns
         -------
@@ -59,7 +58,7 @@ class CCQPSolverBase(ABC):
         pass
 
     @abstractproperty
-    def solution_num_matrix_vector_multipliciations(self):
+    def solution_num_matrix_vector_multiplications(self):
         pass
 
 
@@ -68,16 +67,16 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
     Parameters
     ----------
-    desired_residual_tol : numerical_type or None. 
+    desired_residual_tol : numerical_type or None.
         desired residual to accept the iterative solution.
-    max_matrix_vector_multipliciations : numerical_type or None. Defaults to infinity.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
         Maximum number of matrix-vector multiplies before the solver is terminated early.
     """
 
-    def __init__(self, desired_residual_tol, max_matrix_vector_multipliciations=np.inf, with_anti_relaxation=True):
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf, with_anti_relaxation=True):
         # store the user input
         self.desired_residual_tol = desired_residual_tol
-        self.max_matrix_vector_multipliciations = max_matrix_vector_multipliciations
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
         self.with_anti_relaxation = with_anti_relaxation
 
         # initialize the internal data
@@ -100,7 +99,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
                 Initial guess for the solution x. Defaults to all zeros. 
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-            projection opperator taking x to its projection 
+            projection operator taking x to its projection 
                 onto the feasible set.
 
         Returns
@@ -119,7 +118,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         return result
 
     def _solve_method1(self, A, b, x0=None, convex_proj_op=None):
-        """APDG with antirelaxation from Mazhar 2015"""
+        """APDG with anti-relaxation from Mazhar 2015"""
         num_unknowns = b.shape[0]
         if convex_proj_op is None:
             convex_proj_op = ss.IdentityProjOp(num_unknowns)
@@ -156,10 +155,10 @@ class CCQPSolverAPGD(CCQPSolverBase):
         resmin = np.inf
         while True:
             # line 7 of Mazhar 2015
-            # Axb = A yk, this does not change in the following Lifshitz loop
+            # Axb = A yk, this does not change in the following Lipchitz loop
             Ayk = A.dot(yk)
             mv_count += 1
-            if mv_count >= self.max_matrix_vector_multipliciations:
+            if mv_count >= self.max_matrix_vector_multiplications:
                 break
 
             gk = Ayk + b
@@ -171,10 +170,10 @@ class CCQPSolverAPGD(CCQPSolverBase):
             rightTerm2 = yk.dot(b)
 
             while True:
-                # calc Lifshitz condition
+                # calc Lipchitz condition
                 Axkp1 = A.dot(xkp1)
                 mv_count += 1
-                if mv_count >= self.max_matrix_vector_multipliciations:
+                if mv_count >= self.max_matrix_vector_multiplications:
                     break
 
                 # line 9 of Mazhar 2015
@@ -202,8 +201,8 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
             # check convergence, line 17 and Eq 25 of Mazhar 2015
             gd = 1e-6
-            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) * \
-                (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
 
             # line 18-21 of Mazhar 2015
             if res < resmin:
@@ -232,11 +231,11 @@ class CCQPSolverAPGD(CCQPSolverBase):
         # line 32 of Maxhar 2015
         self._solution = np.copy(xhatk)
 
-        self._solution_converged = mv_count < self.max_matrix_vector_multipliciations
+        self._solution_converged = mv_count < self.max_matrix_vector_multiplications
         self._solution_residual = res
         self._solution_num_matrix_vector_mults = mv_count
         time_stop = time.time()
-        self._solution_time = time_start - time_stop
+        self._solution_time = time_stop - time_start
 
         return self
 
@@ -257,5 +256,5 @@ class CCQPSolverAPGD(CCQPSolverBase):
         return self._solution_time
 
     @property
-    def solution_num_matrix_vector_multipliciations(self):
+    def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults

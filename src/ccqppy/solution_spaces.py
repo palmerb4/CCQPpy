@@ -33,7 +33,7 @@ class ProjOpBase(ABC):
         Parameters
         ----------
             embedded_dimension : {int}
-                dimention of the embeded space
+                dimension of the embedded space
             num_random_samples : {int} 
                 number of random samples
         """
@@ -168,7 +168,7 @@ class SphereProjOp(ProjOpBase):
         assert(self.radius > 0, "Radius must be positive")
 
     def __call__(self, x):
-        """Projection operation for the space 
+        """Projection operation for the space
         {x in R^n : sqrt(x^Tx) <= r} for some hyper-sphere radius r in R^+
 
         Parameters
@@ -189,13 +189,14 @@ class SphereProjOp(ProjOpBase):
 
 
 class ConeProjOp(ProjOpBase):
+    # TODO(palmerb4): This projection op is bugged
     def __init__(self, embedded_dimension, aspect_ratio=None):
         if aspect_ratio is not None:
             self.aspect_ratio = aspect_ratio
         else:
             self.aspect_ratio = 1
 
-        assert(aspect_ratio > 0, "Aspect ratio must be positive")
+        assert(self.aspect_ratio > 0, "Aspect ratio must be positive")
 
     def __call__(self, x):
         """Projection operation for the space 
