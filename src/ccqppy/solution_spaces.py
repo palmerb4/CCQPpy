@@ -1,7 +1,7 @@
 """Define the projection operations for different convex feasible sets"""
 
 # external
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -24,6 +24,11 @@ class ProjOpBase(ABC):
             x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
+        pass
+
+    @abstractproperty
+    def name(self):
+        """Return the name of the projection operator."""
         pass
 
     def plot(self, embedded_dimension, num_random_samples, lower_bound, upper_bound):
@@ -56,6 +61,11 @@ class IdentityProjOp(ProjOpBase):
     def __init__(self, embedded_dimension):
         pass
 
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Identity"
+
     def __call__(self, x):
         """Projection operation for the space 
         {x in R^n}
@@ -79,6 +89,11 @@ class LowerBoundProjOp(ProjOpBase):
             self.lower_bound = lower_bound
         else:
             self.lower_bound = -np.ones(embedded_dimension)
+
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Lower Bound"
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -104,6 +119,11 @@ class UpperBoundProjOp(ProjOpBase):
             self.upper_bound = upper_bound
         else:
             self.upper_bound = np.ones(embedded_dimension)
+
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Upper Bound"
 
     def __call__(self, x):
         """Projection operation for the space 
@@ -138,6 +158,11 @@ class BoxProjOp(ProjOpBase):
         assert(np.all(self.upper_bound > self.lower_bound),
                "Upper bound must be greater than the lower bound.")
 
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Box"
+
     def __call__(self, x):
         """Projection operation for the space 
         {x in R^n : lb <= x <= ub} for some lower and upper bounds lb/ub in R^n
@@ -166,6 +191,11 @@ class SphereProjOp(ProjOpBase):
             self.radius = 1
 
         assert(self.radius > 0, "Radius must be positive")
+
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Sphere"
 
     def __call__(self, x):
         """Projection operation for the space
@@ -197,6 +227,11 @@ class ConeProjOp(ProjOpBase):
             self.aspect_ratio = 1
 
         assert(self.aspect_ratio > 0, "Aspect ratio must be positive")
+
+    @property
+    def name(self):
+        """Return the name of the projection operator."""
+        return "Cone"
 
     def __call__(self, x):
         """Projection operation for the space 

@@ -98,6 +98,7 @@ class BenchmarkRandomCCQP:
         num_solvers = len(self.solvers_to_benchmark)
         num_proj_ops = len(self.convex_proj_ops_to_benchmark)
 
+        # Plot the number of matrix vector multiplications and compute time for all cases vs the matrix size.
         fig, axs_left = plt.subplots(num_solvers, num_proj_ops, sharex='col', sharey='row',
                                      gridspec_kw={'hspace': 0, 'wspace': 0})  # , constrained_layout = True
 
@@ -106,32 +107,46 @@ class BenchmarkRandomCCQP:
         for i in range(num_solvers):
             for j in range(num_proj_ops):
                 axs_right[i, j] = axs_left[i, j].twinx()
-                axs_left[i, j].get_shared_y_axes().join(axs_left[i, j], axs_right[i, j])
+                axs_left[i, j].get_shared_y_axes().join(
+                    axs_left[i, j], axs_right[i, j])
 
         for solver_id, solver in enumerate(self.solvers_to_benchmark):
             for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
-                axs_left[solver_id, proj_id_id].plot(
+                axs_left[solver_id, proj_id_id].semilogy(
                     self.problem_sizes, self._problem_time[solver_id, proj_id_id, :], 'b')
-                axs_right[solver_id, proj_id_id].plot(
+                axs_right[solver_id, proj_id_id].semilogy(
                     self.problem_sizes, self._problem_num_matrix_vector_mults[solver_id, proj_id_id, :], 'r')
 
-        for i in range(num_solvers):
-            for j in range(num_proj_ops):
-                axs_left[i, j].yaxis.label.set_color('red')
-                axs_right[i, j].yaxis.label.set_color('blue')
-                axs_left[i, j].tick_params(axis='y', colors='red')
-                axs_right[i, j].tick_params(axis='y', colors='blue')
-                axs_left[i, j].label_outer()
-                axs_right[i, j].label_outer()
+                axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
+                axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
+                axs_left[solver_id, proj_id_id].tick_params(axis='y', colors='red')
+                axs_right[solver_id, proj_id_id].tick_params(axis='y', colors='blue')
+                axs_left[solver_id, proj_id_id].label_outer()
+                axs_right[solver_id, proj_id_id].label_outer()
 
+
+                fake_solver_instance = solver(0)
+                fake_convex_proj_op_instance = convex_proj_op(0)
+                if solver_id == 0:
+                    axs_left[solver_id, proj_id_id].set_title(fake_convex_proj_op_instance.name)
+
+                if solver_id == num_solvers - 1:
+                    axs_left[solver_id, proj_id_id].set_xlabel('number of unknowns')
+
+
+                if proj_id_id == 0:
+                    axs_left[solver_id, proj_id_id].set_ylabel(fake_solver_instance.name + '\n wall-clock time [s]')
+
+                if proj_id_id == num_proj_ops - 1:
+                    axs_right[solver_id, proj_id_id].set_ylabel(fake_solver_instance.name + '\n number of matrix-vector multiplications')
+                    
         plt.show()
-        pass
-
+        print("")
 
 if __name__ == '__main__':
     problem_sizes = np.linspace(2, 100, 50, dtype=int)
     desired_residual_tol = 1e-5
-    max_matrix_vector_multiplications = 10000
+    max_matrix_vector_multiplications = 5000
 
     solvers_to_benchmark = [solvers.CCQPSolverAPGD]
     convex_proj_ops_to_benchmark = [ss.IdentityProjOp,
