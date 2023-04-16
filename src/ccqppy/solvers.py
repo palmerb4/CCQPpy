@@ -78,11 +78,10 @@ class CCQPSolverAPGD(CCQPSolverBase):
         Maximum number of matrix-vector multiplies before the solver is terminated early.
     """
 
-    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf, with_anti_relaxation=False):
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
         # store the user input
         self.desired_residual_tol = desired_residual_tol
         self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
-        self.with_anti_relaxation = with_anti_relaxation
 
         # initialize the internal data
         self._solution = None
@@ -92,7 +91,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
         self._solution_num_matrix_vector_mults = None
 
     def solve(self, A, b, x0=None, convex_proj_op=None):
-        """
+        """APDG from Algorithm 6 of Pospisil 2015
         f(x) = x^T A x - x^T b 
 
         Parameters
@@ -113,18 +112,6 @@ class CCQPSolverAPGD(CCQPSolverBase):
         self : CCQPSolverAPGD
             The solved constrained convex quadratic problem.
         """
-        num_unknowns = b.shape[0]
-        if convex_proj_op is None:
-            convex_proj_op = ss.IdentityProjOp(num_unknowns)
-
-        if self.with_anti_relaxation:
-            result = self._solve_method1(A, b, x0, convex_proj_op)
-        else:
-            result = self._solve_method0(A, b, x0, convex_proj_op)
-        return result
-
-    def _solve_method0(self, A, b, x0=None, convex_proj_op=None):
-        """APDG optimized for QP from Algorithm 6 of Pospisil 2015"""
         num_unknowns = b.shape[0]
         if convex_proj_op is None:
             convex_proj_op = ss.IdentityProjOp(num_unknowns)
@@ -228,8 +215,76 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
         return self
 
-    def _solve_method1(self, A, b, x0=None, convex_proj_op=None):
-        """APDG with anti-relaxation from Mazhar 2015"""
+    @property
+    def name(self):
+        return "APGD"
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+
+class CCQPSolverAPGDAntiRelaxation(CCQPSolverBase):
+    """Concrete implementation of the APGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    """
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        """APDG with anti-relaxation from Mazhar 2015
+        f(x) = x^T A x - x^T b 
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros. 
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection 
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        """
         num_unknowns = b.shape[0]
         if convex_proj_op is None:
             convex_proj_op = ss.IdentityProjOp(num_unknowns)
@@ -352,7 +407,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
     @property
     def name(self):
-        return "APGD"
+        return "Anti-relaxation APGD"
 
     @property
     def solution(self):

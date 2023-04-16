@@ -144,11 +144,11 @@ class BenchmarkRandomCCQP:
         print("")
 
 if __name__ == '__main__':
-    problem_sizes = np.linspace(2, 100, 50, dtype=int)
+    problem_sizes = np.linspace(2, 500, 50, dtype=int)
     desired_residual_tol = 1e-5
     max_matrix_vector_multiplications = 5000
 
-    solvers_to_benchmark = [solvers.CCQPSolverAPGD]
+    solvers_to_benchmark = [solvers.CCQPSolverAPGD, solvers.CCQPSolverAPGDAntiRelaxation]
     convex_proj_ops_to_benchmark = [ss.IdentityProjOp,
                                     ss.LowerBoundProjOp,
                                     ss.UpperBoundProjOp,
