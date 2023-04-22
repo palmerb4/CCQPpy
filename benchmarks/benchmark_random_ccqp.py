@@ -111,22 +111,23 @@ class BenchmarkRandomCCQP:
         for i in range(num_solvers):
             for j in range(num_proj_ops):
                 axs_right[i, j] = axs_left[i, j].twinx()
-                axs_left[i, j].get_shared_y_axes().join(
-                    axs_left[i, j], axs_right[i, j])
 
         for solver_id, solver in enumerate(self.solvers_to_benchmark):
             for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
                 axs_left[solver_id, proj_id_id].semilogy(
-                    self.problem_sizes, self._problem_time[solver_id, proj_id_id, :], 'b')
+                    self.problem_sizes, self._problem_time[solver_id, proj_id_id, :], 'r')
                 axs_right[solver_id, proj_id_id].semilogy(
-                    self.problem_sizes, self._problem_num_matrix_vector_mults[solver_id, proj_id_id, :], 'r')
+                    self.problem_sizes, self._problem_num_matrix_vector_mults[solver_id, proj_id_id, :], 'b')
+
+                axs_left[solver_id, proj_id_id].set_ylim(axs_left[solver_id, 0].get_ylim())
+                axs_right[solver_id, proj_id_id].set_ylim(axs_right[solver_id, 0].get_ylim())
 
                 axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
                 axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
-                axs_left[solver_id, proj_id_id].tick_params(
-                    axis='y', colors='red')
-                axs_right[solver_id, proj_id_id].tick_params(
-                    axis='y', colors='blue')
+
+                axs_left[solver_id, proj_id_id].tick_params(axis='y', colors='red')
+                axs_right[solver_id, proj_id_id].tick_params(axis='y', colors='blue')
+
                 axs_left[solver_id, proj_id_id].label_outer()
                 axs_right[solver_id, proj_id_id].label_outer()
 
@@ -159,25 +160,9 @@ class BenchmarkRandomCCQP:
         for i in range(num_solvers):
             for j in range(num_proj_ops):
                 axs_right[i, j] = axs_left[i, j].twinx()
-                axs_left[i, j].get_shared_y_axes().join(
-                    axs_left[i, j], axs_right[i, j])
 
         for solver_id, solver in enumerate(self.solvers_to_benchmark):
             for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
-                axs_left[solver_id, proj_id_id].semilogy(
-                    self.problem_sizes, self._problem_l2norm_error[solver_id, proj_id_id, :], 'b')
-                axs_right[solver_id, proj_id_id].semilogy(
-                    self.problem_sizes, self._problem_residual[solver_id, proj_id_id, :], 'r')
-
-                axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
-                axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
-                axs_left[solver_id, proj_id_id].tick_params(
-                    axis='y', colors='red')
-                axs_right[solver_id, proj_id_id].tick_params(
-                    axis='y', colors='blue')
-                axs_left[solver_id, proj_id_id].label_outer()
-                axs_right[solver_id, proj_id_id].label_outer()
-
                 fake_solver_instance = solver(0)
                 fake_convex_proj_op_instance = convex_proj_op(0)
                 if solver_id == 0:
@@ -196,6 +181,24 @@ class BenchmarkRandomCCQP:
                     axs_right[solver_id, proj_id_id].set_ylabel(
                         fake_solver_instance.name + '\n solution residual')
 
+                axs_left[solver_id, proj_id_id].semilogy(
+                    self.problem_sizes, self._problem_l2norm_error[solver_id, proj_id_id, :], 'r')
+                axs_right[solver_id, proj_id_id].semilogy(
+                    self.problem_sizes, self._problem_residual[solver_id, proj_id_id, :], 'b')
+
+                axs_left[solver_id, proj_id_id].set_ylim(axs_left[solver_id, 0].get_ylim())
+                axs_right[solver_id, proj_id_id].set_ylim(axs_right[solver_id, 0].get_ylim())
+
+                axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
+                axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
+
+                axs_left[solver_id, proj_id_id].tick_params(axis='y', colors='red')
+                axs_right[solver_id, proj_id_id].tick_params(axis='y', colors='blue')
+
+                axs_left[solver_id, proj_id_id].label_outer()
+                axs_right[solver_id, proj_id_id].label_outer()
+
+
         plt.show()
         print("")
 
@@ -206,13 +209,15 @@ if __name__ == '__main__':
     max_matrix_vector_multiplications = 5000
 
     solvers_to_benchmark = [solvers.CCQPSolverAPGD,
-                            solvers.CCQPSolverAPGDAntiRelaxation]
+                            solvers.CCQPSolverAPGDAntiRelaxation, 
+                            solvers.CCQPSolverBBPGD,
+                            solvers.CCQPSolverBBPGDf]
+    
     convex_proj_ops_to_benchmark = [ss.IdentityProjOp,
                                     ss.LowerBoundProjOp,
                                     ss.UpperBoundProjOp,
                                     ss.BoxProjOp,
-                                    ss.SphereProjOp,
-                                    ss.ConeProjOp]
+                                    ss.SphereProjOp]
 
     benchmark = BenchmarkRandomCCQP(solvers_to_benchmark, convex_proj_ops_to_benchmark,
                                     problem_sizes, desired_residual_tol, max_matrix_vector_multiplications)

@@ -35,6 +35,21 @@ class TestSolversAgainstSimpleProblems(unittest.TestCase):
             self.assertTrue(result.solution_converged)
             self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
 
+            # Test BBPGD
+            result = solvers.CCQPSolverBBGPD(1e-8, 10000).solve(
+                test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)
+            self.assertTrue(result.solution_converged)
+            self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
+
+            # Test BBPGD with fallback
+            result = solvers.CCQPSolverBBPGDf(1e-8, 10000).solve(
+                test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)
+            self.assertTrue(result.solution_converged)
+            self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
+
+            
 
 if __name__ == '__main__':
-    unittest.main()
+    # unittest.main()
+    test = TestSolversAgainstSimpleProblems()
+    test.test_APGD()
