@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod, abstractproperty
 import numpy as np
 import time
+from collections import deque
 
 # internal
 from . import solution_spaces as ss
@@ -525,7 +526,8 @@ class CCQPSolverBBPGD(CCQPSolverBase):
                 # update variables for iteration
                 xkdiff = xk - xkm1
                 gkdiff = gk - gkm1
-                alpha = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
 
                 # swap the contents of pointers directly, be careful
                 xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
@@ -680,12 +682,12 @@ class CCQPSolverBBPGDf(CCQPSolverBase):
                 # update variables for iteration
                 xkdiff = xk - xkm1
                 gkdiff = gk - gkm1
-                alpha = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
 
                 # swap the contents of pointers directly, be careful
                 xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
                 gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
-
 
         self._solution = np.copy(xk)
         self._solution_converged = mv_count < self.max_matrix_vector_multiplications
@@ -719,4 +721,159 @@ class CCQPSolverBBPGDf(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
-    
+
+
+class CCQPSolverSPG(CCQPSolverBase):
+    """Concrete implementation of the SPG-QP algorithm
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    """
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf,
+                 m=5, tau=0.5, sigma1=0.01, sigma2=0.5):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+        # New inputs
+        self.m = m
+        self.t = tau
+        self.sigma1 = sigma1
+        self.sigma2 = sigma2
+
+    def cost_func(A, b, x):
+        return 0.5 * np.dot(x, np.dot(A, x)) - np.dot(b, x)
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        """SPG-QP from Algorithm 5 of Pospisil 2018
+        f(x) = x^T A x - x^T b
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            k : {integer} of shape (n)
+                Number of iterations for this algorithm to compute.
+            m : {integer} of shape(n)
+                Number of previous iterations used to compute max value of objective function.
+                Large m creates more stable convergence, though it is computationally heavy.
+            t : {integer} of shape (n) between 0 and 1.
+                Amount of safeguarding, used to scale step size.
+                Small tau means small step size and vice versa.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+        Returns
+        -------
+        self : CCQPSolverSPG
+            The solved constrained convex quadratic problem.
+        """
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print("solving SPG")
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 to 3 of Pospisil 2018
+        xk = np.copy(x0)
+        gk = A.dot(xk) + b
+        fk = np.dot(gk, xk)
+        alpha = gk.dot(gk) / (gk.dot(A.dot(gk)))
+        mv_count += 2
+
+        tau = self.t
+        m = self.m
+        sig1 = self.sigma1
+        sig2 = self.sigma2
+        fk_queue = deque(maxlen=m)
+        fk_queue.append(fk)
+
+        # enter main loop
+        while True:
+            # alpha is the step size
+            dk = convex_proj_op(xk - alpha * gk) - xk
+            Adk = A.dot(dk)
+            mv_count += 1
+            if mv_count >= self.max_matrix_vector_multiplications:
+                break
+
+            # Precompute the dot products, line 7 of Popisil 2018
+            dkdotdk = np.dot(dk, dk)
+            dkdotAdk = np.dot(dk, Adk)
+            dkdotgk = np.dot(dk, gk)
+
+            # Breaking conditions
+            if np.sqrt(dkdotdk) <= self.desired_residual_tol:
+                break
+
+            # line 9 of popisil 2018
+            fmax = max(fk_queue)
+
+            # lines 10-18 of popisil 2018
+            xi = (fmax - fk) / dkdotAdk
+            beta = -dkdotgk / dkdotAdk
+            betahat = tau * beta + np.sqrt((tau** 2) * (beta** 2) + 2 * xi)
+            betak = np.random.uniform(low=sig1, high=min(betahat, sig2))
+
+            xk += betak * dk
+            gk += betak * Adk
+            fk += betak * betak * dkdotgk + 0.5 * (betak ** 2) * dkdotAdk
+            fk_queue.append(fk)
+
+            alpha = dkdotdk / dkdotAdk
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count < self.max_matrix_vector_multiplications
+        self._solution_residual = np.linalg.norm(A @ self._solution - b)
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return "SPG-QP"
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
