@@ -847,7 +847,7 @@ class CCQPSolverSPG(CCQPSolverBase):
 
         self._solution = np.copy(xk)
         self._solution_converged = mv_count < self.max_matrix_vector_multiplications
-        self._solution_residual = np.linalg.norm(A @ self._solution - b)
+        self._solution_residual = np.sqrt(dkdotdk)
         self._solution_num_matrix_vector_mults = mv_count
         time_stop = time.time()
         self._solution_time = time_stop - time_start

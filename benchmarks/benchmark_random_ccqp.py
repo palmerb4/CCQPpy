@@ -111,6 +111,7 @@ class BenchmarkRandomCCQP:
         for i in range(num_solvers):
             for j in range(num_proj_ops):
                 axs_right[i, j] = axs_left[i, j].twinx()
+                axs_right[i, j].get_shared_y_axes().join(axs_left[i, j], axs_right[i, j])
 
         for solver_id, solver in enumerate(self.solvers_to_benchmark):
             for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
@@ -119,8 +120,8 @@ class BenchmarkRandomCCQP:
                 axs_right[solver_id, proj_id_id].semilogy(
                     self.problem_sizes, self._problem_num_matrix_vector_mults[solver_id, proj_id_id, :], 'b')
 
-                axs_left[solver_id, proj_id_id].set_ylim(axs_left[solver_id, 0].get_ylim())
-                axs_right[solver_id, proj_id_id].set_ylim(axs_right[solver_id, 0].get_ylim())
+                # axs_left[solver_id, proj_id_id].set_ylim(axs_left[solver_id, 0].get_ylim())
+                # axs_right[solver_id, proj_id_id].set_ylim(axs_right[solver_id, 0].get_ylim())
 
                 axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
                 axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
@@ -160,6 +161,7 @@ class BenchmarkRandomCCQP:
         for i in range(num_solvers):
             for j in range(num_proj_ops):
                 axs_right[i, j] = axs_left[i, j].twinx()
+                axs_right[i, j].get_shared_y_axes().join(axs_left[i, j], axs_right[i, j])
 
         for solver_id, solver in enumerate(self.solvers_to_benchmark):
             for proj_id_id, convex_proj_op in enumerate(self.convex_proj_ops_to_benchmark):
@@ -186,8 +188,8 @@ class BenchmarkRandomCCQP:
                 axs_right[solver_id, proj_id_id].semilogy(
                     self.problem_sizes, self._problem_residual[solver_id, proj_id_id, :], 'b')
 
-                axs_left[solver_id, proj_id_id].set_ylim(axs_left[solver_id, 0].get_ylim())
-                axs_right[solver_id, proj_id_id].set_ylim(axs_right[solver_id, 0].get_ylim())
+                # axs_left[solver_id, proj_id_id].set_ylim([2e-2, 100])
+                # axs_right[solver_id, proj_id_id].set_ylim([0.2 * self.desired_residual_tol, 10 * self.desired_residual_tol])
 
                 axs_left[solver_id, proj_id_id].yaxis.label.set_color('red')
                 axs_right[solver_id, proj_id_id].yaxis.label.set_color('blue')
@@ -211,7 +213,8 @@ if __name__ == '__main__':
     solvers_to_benchmark = [solvers.CCQPSolverAPGD,
                             solvers.CCQPSolverAPGDAntiRelaxation, 
                             solvers.CCQPSolverBBPGD,
-                            solvers.CCQPSolverBBPGDf]
+                            solvers.CCQPSolverBBPGDf,
+                            solvers.CCQPSolverSPG]
     
     convex_proj_ops_to_benchmark = [ss.IdentityProjOp,
                                     ss.LowerBoundProjOp,
