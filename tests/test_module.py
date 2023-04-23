@@ -24,6 +24,12 @@ class TestSolversAgainstSimpleProblems(unittest.TestCase):
                          problem_suite.ActiveBoxConstrainedSPD()]
         
         for test_problem in test_problems:
+            # Test PGD
+            result = solvers.CCQPSolverPGD(1e-8, 10000, 0.1).solve(
+                test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)
+            self.assertTrue(result.solution_converged)
+            self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
+
             # Test APGD
             result = solvers.CCQPSolverAPGD(1e-8, 10000).solve(
                 test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)

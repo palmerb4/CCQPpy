@@ -59,7 +59,7 @@ class BenchmarkRandomCCQP:
 
         A = wishart.rvs(problem_size, np.eye(
             problem_size), size=1, random_state=seed)
-        unconstrained_solution = np.random.rand(problem_size)
+        unconstrained_solution = 1 - 2 * np.random.rand(problem_size) 
         b = -A.dot(unconstrained_solution)
         return (A, b)
 
@@ -102,7 +102,7 @@ class BenchmarkRandomCCQP:
                                                               proj_id,
                                                               trial_id] = result.solution_num_matrix_vector_multiplications
 
-    def plot(self, name, date):
+    def plot(self, name, date, do_log_y=True):
         num_solvers = len(self.solvers_to_benchmark)
         num_proj_op_types = len(self.convex_proj_ops_to_benchmark)
         colormap = plt.cm.rainbow
@@ -129,13 +129,14 @@ class BenchmarkRandomCCQP:
 
                 axs[proj_type_id].plot(
                     self.problem_sizes, mean, label=solver.name, color=colors[solver_id])
-                # axs[proj_type_id].fill_between(
-                #     self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
-                # axs[proj_type_id].set_yscale('log')
+                axs[proj_type_id].fill_between(
+                    self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
+                if do_log_y:
+                    axs[proj_type_id].set_yscale('log')
                 axs[proj_type_id].label_outer()
 
-            axs[proj_type_id].set_title(
-                proj_ops[0].name)
+            axs[proj_type_id].set_title(proj_ops[0].name)
+            axs[proj_type_id].set_xlabel('problem size')
 
             if proj_type_id == 0:
                 axs[proj_type_id].set_ylabel(name)
@@ -144,135 +145,20 @@ class BenchmarkRandomCCQP:
         plt.show()
 
     def process_results(self):
-        self.plot('wall-clock time [s]', self._problem_time)
-        self.plot('number of matrix-vector multiplications', self._problem_num_matrix_vector_mults)
-        self.plot('solution residual', self._problem_residual)
-
-        # num_solvers = len(self.solvers_to_benchmark)
-        # num_proj_op_types = len(self.convex_proj_ops_to_benchmark)
-        # colormap = plt.cm.rainbow
-        # colors = [colormap(i) for i in np.linspace(0, 1, num_solvers)]
-
-        # # Plot the time for all cases vs the matrix size.
-        # fig, axs = plt.subplots(1, num_proj_op_types, sharey='row',
-        #                         gridspec_kw={'hspace': 0, 'wspace': 0})
-
-        # for proj_type_id, proj_ops in enumerate(self.convex_proj_ops_to_benchmark):
-        #     for solver_id, solver in enumerate(self.solvers_to_benchmark):
-        #         # post process time
-        #         num_problems = len(self.problem_sizes)
-        #         mean = np.zeros(num_problems)
-        #         lower_95 = np.zeros(num_problems)
-        #         upper_95 = np.zeros(num_problems)
-        #         for i in range(num_problems):
-        #             mean[i] = np.mean(
-        #                 self._problem_time[solver_id, proj_type_id, i, :])
-        #             sem = st.sem(self._problem_time[solver_id, proj_type_id, i, :])
-        #             h = sem * st.t.ppf((1 + 0.95) / 2., num_problems - 1)
-        #             lower_95[i] = mean[i] - h
-        #             upper_95[i] = mean[i] + h
-
-        #         axs[proj_type_id].plot(
-        #             self.problem_sizes, mean, label=solver.name, color=colors[solver_id])
-        #         # axs[proj_type_id].fill_between(
-        #         #     self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
-        #         # axs[proj_type_id].set_yscale('log')
-        #         axs[proj_type_id].label_outer()
-
-        #     axs[proj_type_id].set_title(
-        #         proj_ops[0].name)
-
-        #     if proj_type_id == 0:
-        #         axs[proj_type_id].set_ylabel(
-        #             'wall-clock time [s]')
-
-        # plt.legend()
-        # plt.show()
-
-
-        # # Plot the num mv mults for all cases vs the matrix size.
-        # fig, axs = plt.subplots(1, num_proj_op_types, sharey='row',
-        #                         gridspec_kw={'hspace': 0, 'wspace': 0})
-
-        # for proj_type_id, proj_ops in enumerate(self.convex_proj_ops_to_benchmark):
-        #     for solver_id, solver in enumerate(self.solvers_to_benchmark):
-        #         # post process time
-        #         num_problems = len(self.problem_sizes)
-        #         mean = np.zeros(num_problems)
-        #         lower_95 = np.zeros(num_problems)
-        #         upper_95 = np.zeros(num_problems)
-        #         for i in range(num_problems):
-        #             mean[i] = np.mean(
-        #                 self._problem_num_matrix_vector_mults[solver_id, proj_type_id, i, :])
-        #             conf = st.t.interval(alpha=0.95, df=num_problems-1,
-        #                                  loc=mean[i], scale=st.sem(self._problem_num_matrix_vector_mults[solver_id, proj_type_id, i, :]))
-        #             lower_95[i] = conf[0]
-        #             upper_95[i] = conf[1]
-
-        #         axs[proj_type_id].plot(
-        #             self.problem_sizes, mean, label=solver.name, color=colors[solver_id])
-        #         # axs[proj_type_id].fill_between(
-        #         #     self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
-        #         # axs[proj_type_id].set_yscale('log')
-        #         axs[proj_type_id].label_outer()
-
-        #     axs[proj_type_id].set_title(
-        #         proj_ops[0].name)
-
-        #     if proj_type_id == 0:
-        #         axs[proj_type_id].set_ylabel(
-        #             'number of matrix-vector multiplications')
-
-        # plt.legend()
-        # plt.show()
-
-
-        # # Plot the residual for all cases vs the matrix size.
-        # fig, axs = plt.subplots(1, num_proj_op_types, sharey='row',
-        #                         gridspec_kw={'hspace': 0, 'wspace': 0})
-
-        # for proj_type_id, proj_ops in enumerate(self.convex_proj_ops_to_benchmark):
-        #     for solver_id, solver in enumerate(self.solvers_to_benchmark):
-        #         # post process time
-        #         num_problems = len(self.problem_sizes)
-        #         mean = np.zeros(num_problems)
-        #         lower_95 = np.zeros(num_problems)
-        #         upper_95 = np.zeros(num_problems)
-        #         for i in range(num_problems):
-        #             mean[i] = np.mean(
-        #                 self._problem_residual[solver_id, proj_type_id, i, :])
-        #             conf = st.t.interval(alpha=0.95, df=num_problems-1,
-        #                                  loc=mean[i], scale=st.sem(self._problem_residual[solver_id, proj_type_id, i, :]))
-        #             lower_95[i] = conf[0]
-        #             upper_95[i] = conf[1]
-
-        #         axs[proj_type_id].plot(
-        #             self.problem_sizes, mean, label=solver.name, color=colors[solver_id])
-        #         # axs[proj_type_id].fill_between(
-        #         #     self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
-        #         # axs[proj_type_id].set_yscale('log')
-        #         axs[proj_type_id].label_outer()
-
-        #     axs[proj_type_id].set_title(
-        #         proj_ops[0].name)
-
-        #     if proj_type_id == 0:
-        #         axs[proj_type_id].set_ylabel(
-        #             'solution residual')
-
-        # plt.legend()
-        # plt.show()
-
+        self.plot('wall-clock time [s]', self._problem_time, True)
+        self.plot('number of matrix-vector multiplications', self._problem_num_matrix_vector_mults, True)
+        self.plot('solution residual', self._problem_residual, False)
         print("")
 
 
-if __name__ == '__main__':
-    problem_sizes = np.linspace(2, 500, 50, dtype=int)
+def benchmark_single_constraint():
+    problem_sizes = np.linspace(2, 12, 10, dtype=int)
     num_random_trials = 10
     desired_tol = 1e-5
     max_mv_mults = 5000
 
     solvers_to_benchmark = [
+        solvers.CCQPSolverPGD(desired_tol, max_mv_mults),
         solvers.CCQPSolverAPGD(desired_tol, max_mv_mults),
         solvers.CCQPSolverAPGDAntiRelaxation(desired_tol, max_mv_mults),
         solvers.CCQPSolverBBPGD(desired_tol, max_mv_mults),
@@ -286,11 +172,48 @@ if __name__ == '__main__':
                                   for dim in problem_sizes])
     proj_ops_to_benchmark.append([ss.UpperBoundProjOp(dim)
                                   for dim in problem_sizes])
-    proj_ops_to_benchmark.append([ss.BoxProjOp(dim) for dim in problem_sizes])
     proj_ops_to_benchmark.append([ss.SphereProjOp(dim)
                                  for dim in problem_sizes])
+    proj_ops_to_benchmark.append([ss.BoxProjOp(dim) for dim in problem_sizes])
+
 
     benchmark = BenchmarkRandomCCQP(
         num_random_trials, solvers_to_benchmark, proj_ops_to_benchmark)
     benchmark.run()
     benchmark.process_results()
+
+def benchmark_disjoint_constraints():
+    problem_sizes = np.arange(3, 31, 3)
+    num_random_trials = 10
+    desired_tol = 1e-5
+    max_mv_mults = 5000
+
+    solvers_to_benchmark = [
+        solvers.CCQPSolverPGD(desired_tol, max_mv_mults),
+        solvers.CCQPSolverAPGD(desired_tol, max_mv_mults),
+        solvers.CCQPSolverAPGDAntiRelaxation(desired_tol, max_mv_mults),
+        solvers.CCQPSolverBBPGD(desired_tol, max_mv_mults),
+        solvers.CCQPSolverBBPGDf(desired_tol, max_mv_mults),
+        solvers.CCQPSolverSPG(desired_tol, max_mv_mults)]
+
+    proj_ops_to_benchmark = []
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.IdentityProjOp(3)] * (dim // 3))
+                                 for dim in problem_sizes])
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.LowerBoundProjOp(3)] * (dim // 3))
+                                  for dim in problem_sizes])
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.UpperBoundProjOp(3)] * (dim // 3))
+                                  for dim in problem_sizes])
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.SphereProjOp(3)] * (dim // 3))
+                                 for dim in problem_sizes])
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.BoxProjOp(3)] * (dim // 3)) 
+                                  for dim in problem_sizes])
+
+    benchmark = BenchmarkRandomCCQP(
+        num_random_trials, solvers_to_benchmark, proj_ops_to_benchmark)
+    benchmark.run()
+    benchmark.process_results()
+
+
+if __name__ == '__main__':
+    # benchmark_single_constraint()
+    benchmark_disjoint_constraints()
