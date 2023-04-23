@@ -45,29 +45,32 @@ class ProjOpBase(ABC):
         """Return the embedded dimension of the projection operator."""
         pass
 
-    def plot(self, embedded_dimension, num_random_samples, lower_bound, upper_bound):
-        """Plot the projection operator applied to s random samples taken from the box 
+    def plot(self, num_random_samples, lower_bound, upper_bound):
+        """Plot the projection operator applied to s random samples taken from the box
         {x in R^n : lb <= x <= ub} for some lower and upper bounds lb/ub in R^n
 
         Parameters
         ----------
-            embedded_dimension : {int}
-                dimension of the embedded space
             num_random_samples : {int} 
                 number of random samples
         """
         assert(np.all(upper_bound > lower_bound),
                "Upper bound must be greater than the lower bound")
-        assert(embedded_dimension <= 3,
+        assert(self.embedded_dimension <= 3,
                "Visualizing high dimensional spaces is not supported. Possible values are [1,2,3]")
 
+        dim = self.embedded_dimension
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')
         for _ in range(num_random_samples):
-            random_x_in_box = np.random.rand(
-                embedded_dimension) * (upper_bound - lower_bound) + lower_bound
+            random_x_in_box = np.random.rand(dim) * (upper_bound - lower_bound) + lower_bound
             proj_x = self.__call__(random_x_in_box)
-            ax.scatter(*proj_x)
+            if dim == 1:
+                ax.scatter(proj_x[0], 0.0, 0.0)
+            elif dim == 2:
+                ax.scatter(proj_x[0], proj_x[1], 0.0)
+            elif dim == 3:
+                ax.scatter(proj_x[0], proj_x[1], proj_x[2])
         plt.show()
 
 

@@ -102,7 +102,7 @@ class BenchmarkRandomCCQP:
                                                               proj_id,
                                                               trial_id] = result.solution_num_matrix_vector_multiplications
 
-    def plot(self, name, date, do_log_y=True):
+    def plot(self, name, date, do_log_y=True, with_95_conf=True):
         num_solvers = len(self.solvers_to_benchmark)
         num_proj_op_types = len(self.convex_proj_ops_to_benchmark)
         colormap = plt.cm.rainbow
@@ -129,8 +129,9 @@ class BenchmarkRandomCCQP:
 
                 axs[proj_type_id].plot(
                     self.problem_sizes, mean, label=solver.name, color=colors[solver_id])
-                axs[proj_type_id].fill_between(
-                    self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
+                if with_95_conf:
+                    axs[proj_type_id].fill_between(
+                        self.problem_sizes, lower_95, upper_95, alpha=0.2, color=colors[solver_id])
                 if do_log_y:
                     axs[proj_type_id].set_yscale('log')
                 axs[proj_type_id].label_outer()
@@ -183,8 +184,8 @@ def benchmark_single_constraint():
     benchmark.process_results()
 
 def benchmark_disjoint_constraints():
-    problem_sizes = np.arange(3, 31, 3)
-    num_random_trials = 10
+    problem_sizes = np.arange(3, 13, 3)
+    num_random_trials = 1000
     desired_tol = 1e-5
     max_mv_mults = 5000
 
