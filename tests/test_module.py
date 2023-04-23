@@ -17,7 +17,8 @@ class TestSolutionSpaces(unittest.TestCase):
 
 class TestSolversAgainstSimpleProblems(unittest.TestCase):
     def test_APGD(self):
-        test_problems = [problem_suite.UnconstrainedSPD(),
+        test_problems = [problem_suite.UnconstrainedSPD1(),
+                         problem_suite.UnconstrainedSPD2(),
                          problem_suite.BoxConstrainedSPD(),
                          problem_suite.ThinBoxConstrainedSPD(),
                          problem_suite.ActiveBoxConstrainedSPD()]

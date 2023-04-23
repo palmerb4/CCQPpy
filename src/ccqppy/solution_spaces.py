@@ -423,8 +423,7 @@ class DisjointProjOp(ProjOpBase):
         return normal
 
     def __call__(self, x):
-        """Projection operation for the space
-        {[x,z]^T in R^{n-1} x R : x^Tx <= mu^2 z^2} for some hyper-cone aspect ratio mu in R^+
+        """Projection operation for the space formed from the disjoint union of N different constraints.
 
         Parameters
         ----------
@@ -436,12 +435,12 @@ class DisjointProjOp(ProjOpBase):
             x_proj : {array-like, matrix} of shape (n_unknowns, 1)
                 projected value of x
         """
-        x_norm = np.linalg.norm(x)
-
-        if self.aspect_ratio * x[-1] >= x_norm:
-            return x
-        elif -x[-1] / self.aspect_ratio >= x_norm:
-            return np.zeros_like(x)
-        else:
-            return (x[-1] + self.aspect_ratio * x_norm) / (self.aspect_ratio**2 + 1) \
-                * np.concatenate((x[:-1] / x_norm, [-self.aspect_ratio]))
+        x_proj = np.zeros(self.dim)
+        start_index = 0
+        for proj_op in self.proj_ops:
+            dim = proj_op.embedded_dimension
+            x_proj[start_index: start_index +
+                   dim] = proj_op(x[start_index: start_index + dim])
+            start_index += dim
+        return x_proj
+    

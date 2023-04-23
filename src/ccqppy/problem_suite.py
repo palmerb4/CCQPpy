@@ -39,7 +39,7 @@ class TestProblemBase(ABC):
         pass
 
 
-class UnconstrainedSPD(TestProblemBase):
+class UnconstrainedSPD1(TestProblemBase):
     """A simple 3D unconstrained, strictly convex QP problem"""
 
     def __init__(self):
@@ -60,6 +60,33 @@ class UnconstrainedSPD(TestProblemBase):
     @property
     def convex_proj_op(self):
         return ss.IdentityProjOp(3)
+
+    @property
+    def exact_solution(self):
+        return np.array([1, 0, 1])
+
+
+class UnconstrainedSPD2(TestProblemBase):
+    """A simple 3D unconstrained, strictly convex QP problem"""
+
+    def __init__(self):
+        pass
+
+    @property
+    def number_of_unknowns(self):
+        return 3
+
+    @property
+    def A(self):
+        return np.array([[2, -1, 0], [-1, 2, -1], [0, -1, 2]])
+
+    @property
+    def b(self):
+        return -self.A.dot(self.exact_solution)
+
+    @property
+    def convex_proj_op(self):
+        return ss.DisjointProjOp(ss.IdentityProjOp(1), ss.IdentityProjOp(1), ss.IdentityProjOp(1))
 
     @property
     def exact_solution(self):
@@ -120,6 +147,7 @@ class ThinBoxConstrainedSPD(TestProblemBase):
     @property
     def exact_solution(self):
         return np.array([1, 0, 1])
+
 
 class ActiveBoxConstrainedSPD(TestProblemBase):
     """A simple 3D constrained, strictly convex QP problem 
