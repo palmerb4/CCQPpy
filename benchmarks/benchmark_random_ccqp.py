@@ -5,7 +5,6 @@ convex constrained quadratic programming problems"""
 import numpy as np
 from scipy.stats import wishart
 import matplotlib.pyplot as plt
-import pandas as pd
 import scipy.stats as st
 
 # internal
@@ -185,7 +184,7 @@ def benchmark_single_constraint():
 
 def benchmark_disjoint_constraints():
     problem_sizes = np.arange(3, 13, 3)
-    num_random_trials = 1000
+    num_random_trials = 100
     desired_tol = 1e-5
     max_mv_mults = 5000
 
@@ -195,7 +194,8 @@ def benchmark_disjoint_constraints():
         solvers.CCQPSolverAPGDAntiRelaxation(desired_tol, max_mv_mults),
         solvers.CCQPSolverBBPGD(desired_tol, max_mv_mults),
         solvers.CCQPSolverBBPGDf(desired_tol, max_mv_mults),
-        solvers.CCQPSolverSPG(desired_tol, max_mv_mults)]
+        solvers.CCQPSolverSPG(desired_tol, max_mv_mults),
+        solvers.CCQPSolverMPRGP(desired_tol, max_mv_mults)]
 
     proj_ops_to_benchmark = []
     proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.IdentityProjOp(3)] * (dim // 3))

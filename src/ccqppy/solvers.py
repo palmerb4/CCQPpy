@@ -18,7 +18,7 @@ class CCQPSolverBase(ABC):
     @abstractmethod
     def solve(self, A, b, x0=None, convex_proj_op=None):
         """
-        f(x) = x^T A x - x^T b 
+        f(x) = x^T A x - x^T b
 
         Parameters
         ----------
@@ -27,7 +27,7 @@ class CCQPSolverBase(ABC):
             b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
             x0 : {array-like, matrix} of shape (n_unknowns, 1)
-                Initial guess for the solution x. Defaults to all zeros. 
+                Initial guess for the solution x. Defaults to all zeros.
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
                 projection operator taking x to its projection onto the feasible set.
@@ -93,7 +93,7 @@ class CCQPSolverPGD(CCQPSolverBase):
 
     def solve(self, A, b, x0=None, convex_proj_op=None):
         """Baseline PGD
-        f(x) = x^T A x - x^T b 
+        f(x) = x^T A x - x^T b
         Parameters
         ----------
             A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
@@ -101,10 +101,10 @@ class CCQPSolverPGD(CCQPSolverBase):
             b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
             x0 : {array-like, matrix} of shape (n_unknowns, 1)
-                Initial guess for the solution x. Defaults to all zeros. 
+                Initial guess for the solution x. Defaults to all zeros.
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-            projection operator taking x to its projection 
+            projection operator taking x to its projection
                 onto the feasible set.
         Returns
         -------
@@ -192,7 +192,7 @@ class CCQPSolverPGD(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
-    
+   
 
 class CCQPSolverAPGD(CCQPSolverBase):
     """Concrete implementation of the APGD algorithm
@@ -219,7 +219,7 @@ class CCQPSolverAPGD(CCQPSolverBase):
 
     def solve(self, A, b, x0=None, convex_proj_op=None):
         """APDG from Algorithm 6 of Pospisil 2015
-        f(x) = x^T A x - x^T b 
+        f(x) = x^T A x - x^T b
 
         Parameters
         ----------
@@ -228,10 +228,10 @@ class CCQPSolverAPGD(CCQPSolverBase):
             b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
             x0 : {array-like, matrix} of shape (n_unknowns, 1)
-                Initial guess for the solution x. Defaults to all zeros. 
+                Initial guess for the solution x. Defaults to all zeros.
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-            projection operator taking x to its projection 
+            projection operator taking x to its projection
                 onto the feasible set.
 
         Returns
@@ -392,7 +392,7 @@ class CCQPSolverAPGDAntiRelaxation(CCQPSolverBase):
 
     def solve(self, A, b, x0=None, convex_proj_op=None):
         """APDG with anti-relaxation from Mazhar 2015
-        f(x) = x^T A x - x^T b 
+        f(x) = x^T A x - x^T b
 
         Parameters
         ----------
@@ -401,10 +401,10 @@ class CCQPSolverAPGDAntiRelaxation(CCQPSolverBase):
             b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
             x0 : {array-like, matrix} of shape (n_unknowns, 1)
-                Initial guess for the solution x. Defaults to all zeros. 
+                Initial guess for the solution x. Defaults to all zeros.
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-            projection operator taking x to its projection 
+            projection operator taking x to its projection
                 onto the feasible set.
 
         Returns
@@ -591,10 +591,10 @@ class CCQPSolverBBPGD(CCQPSolverBase):
             b : {array-like, matrix} of shape (n_unknowns, 1)
                 Element of the range space of A.
             x0 : {array-like, matrix} of shape (n_unknowns, 1)
-                Initial guess for the solution x. Defaults to all zeros. 
+                Initial guess for the solution x. Defaults to all zeros.
             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
-            projection operator taking x to its projection 
+            projection operator taking x to its projection
                 onto the feasible set.
 
         Returns
@@ -718,7 +718,7 @@ class CCQPSolverBBPGDf(CCQPSolverBase):
 
     def solve(self, A, b, x0=None, convex_proj_op=None):
         """BBPGD with fallback from Algorithm 5 of Pospisil 2015b
-        f(x) = x^T A x - x^T b 
+        f(x) = x^T A x - x^T b
 
         Parameters
         ----------
@@ -997,3 +997,198 @@ class CCQPSolverSPG(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
+
+class CCQPSolverMPRGP(CCQPSolverBase):
+    """Concrete implementation of the MPRGP algorithm
+    from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    """
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        """MPRGP
+        f(x) = 1/2 x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        """
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print("solving MPRGP")
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # Step 0: Initialization
+        gamma = 1 # TODO(palmerb4) what should gamma be?
+        xk = convex_proj_op(x0)
+        xkp1 = np.copy(xk)
+        gk = A.dot(xk) + b
+        gkp1 = np.copy(gk)
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xk - convex_proj_op(xk - gd * gk)))
+
+        # skip the algorithm if the initial guess is correct.
+        if res >= self.desired_residual_tol:
+            alpha_bb = gk.dot(gk) / (gk.dot(A.dot(gk)))
+            mv_count += 1
+            delta_xk = np.isclose(xk, convex_proj_op(xk))
+            p = delta_xk * gk
+
+            while True:
+                Axk = A.dot(xk)
+                mv_count += 1
+                if mv_count >= self.max_matrix_vector_multiplications:
+                    break
+
+                gk = Axk + b
+                delta_xk = np.isclose(xk, convex_proj_op(xk))
+                psi_xk = delta_xk * gk
+                n_xk = convex_proj_op.normal_vector(xk)
+                beta_xk = (1 - delta_xk) * (gk - np.min([0, n_xk.dot(gk)]) * n_xk)
+                if beta_xk.dot(beta_xk) < gamma**2 * psi_xk.dot(psi_xk):
+                    Ap = A.dot(p)
+                    mv_count += 1
+                    if mv_count >= self.max_matrix_vector_multiplications:
+                        break
+
+                    alpha_cg = gk.dot(p) / p.dot(Ap)
+                    y = xk - alpha_cg * p
+
+                    # line search for the feasible alpha
+                    alpha_f = alpha_cg
+                    while True:
+                        yf = xk - alpha_f * p
+                        if np.all(np.isclose(yf, convex_proj_op(yf))):
+                            break
+                        else:
+                            alpha_f *= 0.5
+
+                    if alpha_cg <= alpha_f:
+                        xkp1 = np.copy(y)
+                        gkp1 = gk - alpha_cg * Ap
+                        delta_y = np.isclose(y, convex_proj_op(y))
+                        psi_y = delta_y * gkp1
+                        beta = psi_y * Ap / p.dot(Ap)
+                        p = psi_y - beta * p
+                    else:
+                        xkphalf = xk - alpha_f * p
+                        gkphalf = A.dot(xkphalf) + b
+                        mv_count += 1
+                        if mv_count >= self.max_matrix_vector_multiplications:
+                            break
+
+                        xkdiff = xkphalf - xk
+                        gkdiff = gkphalf - gk
+                        alpha_bb = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                        delta_xkphalf = np.isclose(xkphalf, convex_proj_op(xkphalf))
+                        psi_xkphalf = delta_xkphalf * gkphalf
+                        xkp1 = convex_proj_op(xkphalf - alpha_bb * psi_xkphalf)
+                        gkp1 = A.dot(xkp1) + b
+                        mv_count += 1
+                        if mv_count >= self.max_matrix_vector_multiplications:
+                            break
+
+                        delta_xkp1 = np.isclose(xkp1, convex_proj_op(xkp1))
+                        psi_xkp1 = delta_xkp1 * gkp1
+                        p = np.copy(psi_xkp1)
+                else:
+                    d = beta_xk
+                    Ad = A.dot(d)
+                    mv_count += 1
+                    if mv_count >= self.max_matrix_vector_multiplications:
+                        break
+
+                    alpha_cg = gk.dot(d) / d.dot(Ad)
+                    xkp1 = xk - alpha_cg * beta_xk
+                    gkp1 = gk - alpha_cg * Ad
+                    delta_xkp1 = np.isclose(xkp1, convex_proj_op(xkp1))
+                    psi_xkp1 = delta_xkp1 * gkp1
+                    p = np.copy(psi_xkp1)
+
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                        (xkp1 - convex_proj_op(xkp1 - gd * gkp1)))
+                if res < self.desired_residual_tol:
+                    break
+
+                # swap the contents of pointers directly, be careful
+                xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+                gk, gkp1 = np.frombuffer(gkp1), np.frombuffer(gk)
+
+        self._solution = np.copy(xkp1)
+        self._solution_converged = mv_count < self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return "MPRGP"
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+   
