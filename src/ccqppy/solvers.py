@@ -1059,7 +1059,6 @@ class CCQPSolverMPRGP(CCQPSolverBase):
             x0 = np.zeros(num_unknowns)
 
         # Step 0: Initialization
-        gamma = 1 # TODO(palmerb4) what should gamma be?
         xk = convex_proj_op(x0)
         xkp1 = np.copy(xk)
         gk = A.dot(xk) + b
@@ -1073,33 +1072,42 @@ class CCQPSolverMPRGP(CCQPSolverBase):
 
         # skip the algorithm if the initial guess is correct.
         if res >= self.desired_residual_tol:
+            # compute the initial BB step size
             alpha_bb = gk.dot(gk) / (gk.dot(A.dot(gk)))
             mv_count += 1
+            
+            # Line 4 of algorith 5.8
             delta_xk = np.isclose(xk, convex_proj_op(xk))
             p = delta_xk * gk
 
             while True:
+                # Precomputations
                 Axk = A.dot(xk)
                 mv_count += 1
                 if mv_count >= self.max_matrix_vector_multiplications:
                     break
-
                 gk = Axk + b
+
+                # Prepotioning condition from line 6 of algorithm 5.8
                 delta_xk = np.isclose(xk, convex_proj_op(xk))
                 psi_xk = delta_xk * gk
                 n_xk = convex_proj_op.normal_vector(xk)
                 beta_xk = (1 - delta_xk) * (gk - np.min([0, n_xk.dot(gk)]) * n_xk)
-                if beta_xk.dot(beta_xk) < gamma**2 * psi_xk.dot(psi_xk):
+                if beta_xk.dot(beta_xk) < psi_xk.dot(psi_xk):
+                    # Precomputations
                     Ap = A.dot(p)
                     mv_count += 1
                     if mv_count >= self.max_matrix_vector_multiplications:
                         break
 
-                    alpha_cg = gk.dot(p) / p.dot(Ap)
+                    # line 8 of algorithm 5.8
+                    alpha_cg = psi_xk.dot(p) / p.dot(Ap)
                     y = xk - alpha_cg * p
 
-                    # line search for the feasible alpha
-                    alpha_f = alpha_cg
+                    # alternative to line 9 of algorithm 5.8
+                    # here, we use recursive bisection to determine a step size 
+                    # within the feasible solution space. 
+                    alpha_f = alpha_cg + 10 * np.finfo(float).eps
                     while True:
                         yf = xk - alpha_f * p
                         if np.all(np.isclose(yf, convex_proj_op(yf))):
@@ -1107,27 +1115,33 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                         else:
                             alpha_f *= 0.5
 
+                    # line 10-12 of algorithm 5.8
                     if alpha_cg <= alpha_f:
+                        # conjugate gradient step
+                        # line 11 of algorithm 5.8
                         xkp1 = np.copy(y)
                         gkp1 = gk - alpha_cg * Ap
+
+                        # line 12 of algorithm 5.8
                         delta_y = np.isclose(y, convex_proj_op(y))
                         psi_y = delta_y * gkp1
                         beta = psi_y * Ap / p.dot(Ap)
                         p = psi_y - beta * p
                     else:
+                        # extension step using BB step size
+                        # line 15. note, there is a typo. g = g - alphaf Ap. means 
+                        # g^{k+1/2} = g^k - alphaf Ap.
                         xkphalf = xk - alpha_f * p
-                        gkphalf = A.dot(xkphalf) + b
-                        mv_count += 1
-                        if mv_count >= self.max_matrix_vector_multiplications:
-                            break
+                        gkphalf = gk - alpha_f * Ap 
 
+                        # line 16 with BB step
                         xkdiff = xkphalf - xk
                         gkdiff = gkphalf - gk
-                        alpha_bb = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
-
-                        delta_xkphalf = np.isclose(xkphalf, convex_proj_op(xkphalf))
-                        psi_xkphalf = delta_xkphalf * gkphalf
-                        xkp1 = convex_proj_op(xkphalf - alpha_bb * psi_xkphalf)
+                        alpha = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+                        xkp1 = convex_proj_op(xkphalf - alpha * gkphalf)
+                        
+                        # reset the GC algorithm
+                        # line 17
                         gkp1 = A.dot(xkp1) + b
                         mv_count += 1
                         if mv_count >= self.max_matrix_vector_multiplications:
@@ -1137,15 +1151,26 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                         psi_xkp1 = delta_xkp1 * gkp1
                         p = np.copy(psi_xkp1)
                 else:
+                    # proportioning step from line 20
                     d = beta_xk
                     Ad = A.dot(d)
                     mv_count += 1
                     if mv_count >= self.max_matrix_vector_multiplications:
                         break
 
-                    alpha_cg = gk.dot(d) / d.dot(Ad)
-                    xkp1 = xk - alpha_cg * beta_xk
-                    gkp1 = gk - alpha_cg * Ad
+                    # line 21 but with BB step
+                    xkp1 = convex_proj_op(xk - alpha_bb * gk)
+                    
+                    xkdiff = xkp1 - xk
+                    gkdiff = gkp1 - gk
+                    alpha_bb = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                    gk = A.dot(xk) + b
+                    mv_count += 1
+                    if mv_count >= self.max_matrix_vector_multiplications:
+                        break
+
+                    # reset the CG iteraton
                     delta_xkp1 = np.isclose(xkp1, convex_proj_op(xkp1))
                     psi_xkp1 = delta_xkp1 * gkp1
                     p = np.copy(psi_xkp1)
