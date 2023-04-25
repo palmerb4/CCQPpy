@@ -5,18 +5,18 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name='ccqppy',
-    author='Tom Chen',
-    author_email='tomchen.org@gmail.com',
-    description='Example PyPI (Python Package Index) Package',
-    keywords='example, pypi, package',
+    author='Bryce Palmer',
+    author_email='palmerb4@wit.edu',
+    description='A systematic comparison of various algorithms for solving convex constrained quadratic programming problems',
+    keywords='quadratic programming, convex optimization',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/tomchen/ccqppy',
+    url='https://github.com/palmerb4/ccqppy',
     project_urls={
-        'Documentation': 'https://github.com/tomchen/ccqppy',
+        'Documentation': 'https://github.com/palmerb4/ccqppy',
         'Bug Reports':
-        'https://github.com/tomchen/ccqppy/issues',
-        'Source Code': 'https://github.com/tomchen/ccqppy',
+        'https://github.com/palmerb4/ccqppy/issues',
+        'Source Code': 'https://github.com/palmerb4/ccqppy',
         # 'Funding': '',
         # 'Say Thanks!': '',
     },
