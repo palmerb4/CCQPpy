@@ -147,6 +147,30 @@ class LowerBoundProjOp(ProjOpBase):
                 if np.isclose(x_proj[i], self.lower_bound[i]):
                     norm[i] = -1
             return norm
+        
+    def projected_gradient(self,x,g):
+        """Return free gradient and chopped gradient at x. Their sum is the projected gradient
+
+        Args:
+            x (np.array): location
+            g (np.array): gradient
+
+        Returns:
+            g_p (tuple): (free gradient, chopped gradient)
+        """
+        # x_proj = self.__call__(x)
+        free_g = np.zeros(self.dim)
+        chopped_g = np.zeros(self.dim)
+        normal = self.normal_vector(x)
+
+        for i in range(self.dim):
+            if np.isclose(x[i], self.lower_bound[i]): # In the active set
+                free_g[i] = 0
+                chopped_g[i] = g[i] - np.min((normal[i]*g[i],0))*(normal[i])
+            else:                                     # In the free set
+                free_g[i] = g[i]
+                chopped_g[i] = 0
+        return (free_g,chopped_g)
 
     def __call__(self, x):
         """Projection operation for the space
@@ -199,6 +223,30 @@ class UpperBoundProjOp(ProjOpBase):
                 if np.isclose(x_proj[i], self.upper_bound[i]):
                     norm[i] = 1
             return norm
+
+    def projected_gradient(self,x,g):
+        """Return free gradient and chopped gradient at x. Their sum is the projected gradient
+
+        Args:
+            x (np.array): location
+            g (np.array): gradient
+
+        Returns:
+            g_p (tuple): (free gradient, chopped gradient)
+        """
+        # x_proj = self.__call__(x)
+        free_g = np.zeros(self.dim)
+        chopped_g = np.zeros(self.dim)
+        normal = self.normal_vector(x)
+
+        for i in range(self.dim):
+            if np.isclose(x[i], self.upper_bound[i]): # In the active set
+                free_g[i] = 0
+                chopped_g[i] = g[i] - np.min((normal[i]*g[i],0))*(normal[i])
+            else:                                     # In the free set
+                free_g[i] = g[i]
+                chopped_g[i] = 0
+        return (free_g,chopped_g)
 
     def __call__(self, x):
         """Projection operation for the space
@@ -262,6 +310,29 @@ class BoxProjOp(ProjOpBase):
                     norm[i] = -1
             return norm
 
+    def projected_gradient(self,x,g):
+        """Return free gradient and chopped gradient at x. Their sum is the projected gradient
+
+        Args:
+            x (np.array): location
+            g (np.array): gradient
+
+        Returns:
+            g_p (tuple): (free gradient, chopped gradient)
+        """
+        free_g = np.zeros(self.dim)
+        chopped_g = np.zeros(self.dim)
+        normal = self.normal_vector(x)
+
+        for i in range(self.dim):
+            if np.isclose(x[i], self.upper_bound[i]) or np.isclose(x[i], self.lower_bound[i]): # In the active set
+                free_g[i] = 0
+                chopped_g[i] = g[i] - np.min((normal[i]*g[i],0))*(normal[i])
+            else:                                     # In the free set
+                free_g[i] = g[i]
+                chopped_g[i] = 0
+        return (free_g,chopped_g)
+
     def __call__(self, x):
         """Projection operation for the space
         {x in R^n : lb <= x <= ub} for some lower and upper bounds lb/ub in R^n
@@ -318,6 +389,33 @@ class SphereProjOp(ProjOpBase):
                 norm = x_proj / x_proj_length
             return norm
 
+    def projected_gradient(self,x,g):
+        """Return free gradient and chopped gradient at x. Their sum is the projected gradient
+
+        Args:
+            x (np.array): location
+            g (np.array): gradient
+
+        Returns:
+            g_p (tuple): (free gradient, chopped gradient)
+        """
+        raise NotImplementedError("Cone proximal gradient not implemented, yet.")
+        # free_g = np.zeros(self.dim)
+        # chopped_g = np.zeros(self.dim)
+        # normal = self.normal_vector(x)
+
+        # if np.isclose(self.radius, np.linalg.norm(x)): # In the active set
+        #     for i in range(self.dim):
+
+        # for i in range(self.dim):
+        #     if np.isclose(x[i], self.upper_bound[i]) or np.isclose(x[i], self.lower_bound[i]): # In the active set
+        #         free_g[i] = 0
+        #         chopped_g[i] = g[i] - np.min((normal[i]@g[i],0))*(normal[i])
+        #     else:                                     # In the free set
+        #         free_g[i] = g[i]
+        #         chopped_g[i] = 0
+        # return (free_g,chopped_g)
+
     def __call__(self, x):
         """Projection operation for the space
         {x in R^n : sqrt(x^Tx) <= r} for some hyper-sphere radius r in R^+
@@ -368,6 +466,9 @@ class ConeProjOp(ProjOpBase):
         """
         raise NotImplementedError("Cone normal not implemented, yet.")
 
+    def proximal_gradient(self,x,g):
+        raise NotImplementedError("Cone proximal gradient not implemented, yet.")
+    
     def __call__(self, x):
         """Projection operation for the space
         {[x,z]^T in R^{n-1} x R : x^Tx <= mu^2 z^2} for some hyper-cone aspect ratio mu in R^+
@@ -424,6 +525,19 @@ class DisjointProjOp(ProjOpBase):
                    dim] = proj_op.normal_vector(x[start_index: start_index + dim])
             start_index += dim
         return normal
+
+    def projected_gradient(self,x,g):
+        free_g = np.zeros(self.dim)
+        chopped_g = np.zeros(self.dim)
+        start_index = 0
+        for proj_op in self.proj_ops:
+            dim = proj_op.embedded_dimension
+            f_g, c_g = proj_op.projected_gradient(x[start_index: start_index + dim],
+                                                   g[start_index: start_index + dim])
+            free_g[start_index: start_index+dim]= f_g
+            chopped_g[start_index: start_index+dim]= c_g
+            start_index += dim
+        return (free_g,chopped_g)
 
     def __call__(self, x):
         """Projection operation for the space formed from the disjoint union of N different constraints.
