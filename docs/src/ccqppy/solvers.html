@@ -1,0 +1,4501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>src.ccqppy.solvers API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.ccqppy.solvers</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># external
+from abc import ABC, abstractmethod, abstractproperty
+import numpy as np
+import time
+from collections import deque
+
+# internal
+from . import solution_spaces as ss
+
+
+class CCQPSolverBase(ABC):
+    &#34;&#34;&#34;Abstract base class for constrained quadratic programming problems.&#34;&#34;&#34;
+
+    @abstractmethod
+    def __init__(self, desired_residual_tol, max_matrix_vector_multipliciations=np.inf):
+        pass
+
+    @abstractmethod
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+                projection operator taking x to its projection onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBase
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        pass
+
+    def _checkSolveInput(self, A, b, x0):
+        pass
+
+    @abstractproperty
+    def name(self):
+        &#34;&#34;&#34;Return the name of the solver.&#34;&#34;&#34;
+        pass
+
+    @abstractproperty
+    def solution(self):
+        pass
+
+    @abstractproperty
+    def solution_residual(self):
+        pass
+
+    @abstractproperty
+    def solution_converged(self):
+        pass
+
+    @abstractproperty
+    def solution_time(self):
+        pass
+
+    @abstractproperty
+    def solution_num_matrix_vector_multiplications(self):
+        pass
+
+
+class CCQPSolverPGD(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of PGD algorithm
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf, step_size=0.01):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+        self.step_size = step_size
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;Baseline PGD
+        f(x) = x^T A x - x^T b
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+        Returns
+        -------
+        self : CCQPSolverPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving PGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - self.step_size * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;PGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+   
+
+class CCQPSolverAPGD(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the APGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;APDG from Algorithm 6 of Pospisil 2015
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving APGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 to 3 of Pospisil 2015
+        xk = np.copy(x0)
+        yk = np.copy(x0)
+        thetak = 1.0
+        thetakp1 = 1.0
+
+        # line 4 of Pospisil 2015
+        xkdiff = xk - np.ones(num_unknowns)
+        AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+        xkdiffNorm2 = np.linalg.norm(xkdiff)
+        mv_count += 1
+
+        Lk = AxkdiffNorm2 / xkdiffNorm2
+        tk = 1.0 / Lk
+
+        # enter main loop
+        while True:
+            # line 7 of Mazhar 2015
+            # Axb = A yk, this does not change in the following Lipchitz loop
+            Ayk = A.dot(yk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            gk = Ayk + b
+
+            # line 5 of Pospisil 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+            rightTerm1 = yk.dot(Ayk) * 0.5
+            rightTerm2 = yk.dot(b)
+
+            while True:
+                # calc Lipchitz condition
+                Axkp1 = A.dot(xkp1)
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # line 9 of Mazhar 2015
+                leftTerm1 = xkp1.dot(Axkp1) * 0.5
+                leftTerm2 = xkp1.dot(b)
+
+                xkdiff = xkp1 - yk
+                rightTerm3 = gk.dot(xkdiff)
+                rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+                if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                    break
+
+                # line 10 &amp; 11 of Mazhar 2015
+                Lk *= 2
+                tk = 1.0 / Lk
+
+                # line 12 of Mazhar 2015
+                xkp1 = convex_proj_op(yk - tk * gk)
+
+            # line7 and 8 of Pospisil 2015
+            thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                              np.sqrt(4 + thetak * thetak))
+            betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+            ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+            # check convergence, line 4 of Pospisil 2015
+            # res = np.linalg.norm(
+            #     Lk * (xkp1 - convex_proj_op(xkp1 - tk * (Axkp1 + b))))
+            gd = 1e-6
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # next iteration
+            Lk *= 0.9
+            tk = 1.0 / Lk
+
+            # swap the contents of pointers directly, be careful
+            yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+            xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+            thetak = thetakp1
+
+        self._solution = np.copy(xkp1)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;APGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+
+class CCQPSolverAPGDAntiRelaxation(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the APGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;APDG with anti-relaxation from Mazhar 2015
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving APGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 and 2 of Mazhar 2015
+        xk = np.copy(x0)
+        yk = np.copy(x0)
+        xhatk = np.ones(num_unknowns)
+
+        # line 3 of Mazhar 2015
+        thetak = 1.0
+        thetakp1 = 1.0
+
+        # line 4 and 5 of Mazhar 2015
+        xkdiff = xk - xhatk
+        AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+        xkdiffNorm2 = np.linalg.norm(xkdiff)
+        mv_count += 1
+
+        Lk = AxkdiffNorm2 / xkdiffNorm2
+        tk = 1.0 / Lk
+
+        # enter main loop
+        resmin = np.inf
+        while True:
+            # line 7 of Mazhar 2015
+            # Axb = A yk, this does not change in the following Lipchitz loop
+            Ayk = A.dot(yk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            gk = Ayk + b
+
+            # line 8 of Mazhar 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+            rightTerm1 = yk.dot(Ayk) * 0.5
+            rightTerm2 = yk.dot(b)
+
+            while True:
+                # calc Lipchitz condition
+                Axkp1 = A.dot(xkp1)
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # line 9 of Mazhar 2015
+                leftTerm1 = xkp1.dot(Axkp1) * 0.5
+                leftTerm2 = xkp1.dot(b)
+
+                xkdiff = xkp1 - yk
+                rightTerm3 = gk.dot(xkdiff)
+                rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+                if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                    break
+
+                # line 10 &amp; 11 of Mazhar 2015
+                Lk *= 2
+                tk = 1.0 / Lk
+
+                # line 12 of Mazhar 2015
+                xkp1 = convex_proj_op(yk - tk * gk)
+
+            # line 14-16 of Mazhar 2015
+            thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                              np.sqrt(4 + thetak * thetak))
+            betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+            ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+            # check convergence, line 17 and Eq 25 of Mazhar 2015
+            gd = 1e-6
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+
+            # line 18-21 of Mazhar 2015
+            if res &lt; resmin:
+                resmin = res
+                xhatk = np.copy(xkp1)
+
+            # line 22-24 of Mazhar 2015
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # line 25-28 of Mazhar 2015
+            if gk.dot(xkp1 - xk) &gt; 0:
+                ykp1 = np.copy(xkp1)
+                thetakp1 = 1
+
+            # line 29-30 of Mazhar 2015
+            Lk *= 0.9
+            tk = 1.0 / Lk
+
+            # next iteration
+            # swap the contents of pointers directly, be careful
+            yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+            xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+            thetak = thetakp1
+
+        # line 32 of Maxhar 2015
+        self._solution = np.copy(xhatk)
+
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;Anti-relaxation APGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+
+class CCQPSolverBBPGD(CCQPSolverBase):
+    &#34;&#34;&#34; Concrete implementation of the BBPGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;BBPGD from Algorithm 1 of Yan 2019
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBBPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving BBPGDf&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # update variables for iteration
+                xkdiff = xk - xkm1
+                gkdiff = gk - gkm1
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;BBGPD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+
+class CCQPSolverBBPGDf(CCQPSolverBase):
+    &#34;&#34;&#34; Concrete implementation of the BBPGD with fallback algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;BBPGD with fallback from Algorithm 5 of Pospisil 2015b
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBBPGDf
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving BBPGDf&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        # lines 1 and 2 of Pospisil 2015
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        xmin = np.copy(x0)
+        gmin = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        resmin = np.inf
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # fallback
+                if res &lt; resmin:
+                    resmin = np.copy(res)
+                    xmin = np.copy(xk)
+                    gmin = np.copy(gk)
+
+                # apply fallback upon stagnation
+                if alpha  &lt; 10 * np.finfo(float).eps:
+                    xk = convex_proj_op(xmin - gd * gmin)
+
+                # update variables for iteration
+                xkdiff = xk - xkm1
+                gkdiff = gk - gkm1
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;BBPDGf&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+
+class CCQPSolverSPG(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the SPG-QP algorithm
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf,
+                 m=5, tau=0.5, sigma1=0.01, sigma2=0.5):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+        # New inputs
+        self.m = m
+        self.t = tau
+        self.sigma1 = sigma1
+        self.sigma2 = sigma2
+
+    def cost_func(A, b, x):
+        return 0.5 * np.dot(x, np.dot(A, x)) - np.dot(b, x)
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;SPG-QP from Algorithm 5 of Pospisil 2018
+        f(x) = x^T A x - x^T b
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            k : {integer} of shape (n)
+                Number of iterations for this algorithm to compute.
+            m : {integer} of shape(n)
+                Number of previous iterations used to compute max value of objective function.
+                Large m creates more stable convergence, though it is computationally heavy.
+            t : {integer} of shape (n) between 0 and 1.
+                Amount of safeguarding, used to scale step size.
+                Small tau means small step size and vice versa.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+        Returns
+        -------
+        self : CCQPSolverSPG
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving SPG&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 to 3 of Pospisil 2018
+        xk = np.copy(x0)
+        gk = A.dot(xk) + b
+        fk = np.dot(gk, xk)
+        alpha = gk.dot(gk) / (gk.dot(A.dot(gk)))
+        mv_count += 2
+
+        tau = self.t
+        m = self.m
+        sig1 = self.sigma1
+        sig2 = self.sigma2
+        fk_queue = deque(maxlen=m)
+        fk_queue.append(fk)
+
+        # enter main loop
+        while True:
+            # alpha is the step size
+            dk = convex_proj_op(xk - alpha * gk) - xk
+            Adk = A.dot(dk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # Precompute the dot products, line 7 of Popisil 2018
+            dkdotdk = np.dot(dk, dk)
+            dkdotAdk = np.dot(dk, Adk)
+            dkdotgk = np.dot(dk, gk)
+
+            # Breaking conditions
+            if np.sqrt(dkdotdk) &lt;= self.desired_residual_tol:
+                break
+
+            # line 9 of popisil 2018
+            fmax = max(fk_queue)
+
+            # lines 10-18 of popisil 2018
+            xi = (fmax - fk) / dkdotAdk
+            beta = -dkdotgk / dkdotAdk
+            betahat = tau * beta + np.sqrt((tau** 2) * (beta** 2) + 2 * xi)
+            betak = np.random.uniform(low=sig1, high=min(betahat, sig2))
+
+            xk += betak * dk
+            gk += betak * Adk
+            fk += betak * betak * dkdotgk + 0.5 * (betak ** 2) * dkdotAdk
+            fk_queue.append(fk)
+
+            alpha = dkdotdk / dkdotAdk
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = np.sqrt(dkdotdk)
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;SPG-QP&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+class CCQPSolverMPRGPBB(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the MPRGP algorithm
+    from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None, Gamma=1, v=0):
+        &#34;&#34;&#34;MPRGP
+        f(x) = 1/2 x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+        print(&#34;solving MPRGP-BB&#34;)
+        mv_count = 0
+
+        # Step 0: Initialization (Alg 5.8 Polyak&#39;s algorithm)
+        k = 0
+        alpha_bar = 2/np.linalg.norm(A,np.inf)
+        xk = convex_proj_op(x0)
+        gk = A.dot(xk) - b
+        alpha_bb = 0 # gk.dot(gk) / (gk.dot(A.dot(gk)))
+        psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,gk) 
+        p = psi_xk 
+        mv_count += 2
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xk - convex_proj_op(xk - gd * gk)))
+        
+        while res &gt;= self.desired_residual_tol:
+            bnorm = beta_xk.dot(beta_xk)
+            psinorm =psi_xk.dot(psi_xk)
+            if v:
+                print(f&#34;It-{k}\tres={res:.5f}\t||psixk||={psinorm:.7f}\t||bnorm||={psinorm:.7f}&#34;)
+            if v==2:
+                print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+            if bnorm&lt; (Gamma**2)*psinorm:
+                # Step 1. Trial conjugate gradient step
+                alpha_cg = gk.dot(p)/(p.dot(A.dot(gk))+1e-10)
+                mv_count+=1
+                y = xk - alpha_cg*p
+                xkp1 = np.copy(xk)
+                
+                alpha_f = alpha_cg + 10*np.finfo(float).eps
+                while True:
+                    yf = xk - alpha_f * p
+                    if np.all(np.isclose(yf, convex_proj_op(yf))):
+                        break
+                    else:
+                        alpha_f *= 0.8
+                if v:
+                    print(f&#34;It-{k} Step.1: alpha_cg={alpha_cg:.10f},\talpha_f={alpha_f:.10f}&#34;)
+                if v==2:
+                    print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+                if alpha_cg &lt;= alpha_f: # Step 2. Conjugate gradient step
+                    xk = y
+                    gk = gk - alpha_cg*A.dot(p)
+                    psi_y, beta_y = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    beta = psi_y.dot(A.dot(p))/(p.dot(A.dot(p))+1e-10)
+                    p = psi_y - beta*p
+                    mv_count+=3
+                    if v:
+                        print(f&#34;It-{k} Step.2: beta={beta:.5f}\t ||psi_y||={np.linalg.norm(psi_y):.4f}\t ||beta_y||={np.linalg.norm(beta_y):.4f}&#34;)
+                    if v==2:
+                        print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+                else: # Step 3. Expansion step
+                    xk = xk - alpha_f*p
+                    gk = gk - alpha_f*A.dot(p)
+                    psi_xhalf, beta_half = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    xk = convex_proj_op(xk-alpha_bar*psi_xhalf)
+                    gk = A.dot(xk)-b
+                    mv_count+=2
+                    psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                    p = psi_xk
+                    if v:
+                        print(f&#34;It-{k} Step.3: beta={alpha_f:.5f}\t ||psi_xhalf||={np.linalg.norm(psi_xhalf):.4f}\t ||beta_half||={np.linalg.norm(beta_half):.4f}&#34;)
+            else: # Step 4. Proportioning step
+                if alpha_bb == 0:
+                    alpha_bb = gk.dot(gk) / ( gk.dot(A.dot(gk)) +1e-10)
+                else:
+                    alpha_bb = (xk-xkp1)@(xk-xkp1)/((xk-xkp1)@A.dot(xk-xkp1)+1e-10)
+                xkp1 = np.copy(xk)
+                gk = A.dot(xk)-b
+                xk = convex_proj_op(xk-alpha_bb*gk)
+                psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                p = psi_xk
+                mv_count += 2
+                if v:
+                    print(f&#34;It-{k} Step.3: alpha_bb={alpha_bb:.4f}\t ||psi_xk||={np.linalg.norm(psi_xk):.4f}\t ||beta_xk||={np.linalg.norm(beta_xk):.4f}&#34;)
+                
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+            
+            k = k+1
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                    (xk - convex_proj_op(xk - gd * gk)))
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;MPGP-BB&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults
+
+# class CCQPSolverMPRGP(CCQPSolverBase):
+#     &#34;&#34;&#34;Concrete implementation of the MPRGP algorithm
+#     from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS
+
+#     Parameters
+#     ----------
+#     desired_residual_tol : numerical_type or None.
+#         desired residual to accept the iterative solution.
+#     max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+#         Maximum number of matrix-vector multiplies before the solver is terminated early.
+#     &#34;&#34;&#34;
+
+#     def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+#         # store the user input
+#         self.desired_residual_tol = desired_residual_tol
+#         self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+#         # initialize the internal data
+#         self._solution = None
+#         self._solution_residual = None
+#         self._solution_converged = None
+#         self._solution_time = None
+#         self._solution_num_matrix_vector_mults = None
+
+#     def solve(self, A, b, x0=None, convex_proj_op=None):
+#         &#34;&#34;&#34;MPRGP
+#         f(x) = 1/2 x^T A x - x^T b
+
+#         Parameters
+#         ----------
+#             A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+#                 Hessian matrix of f(x).
+#             b : {array-like, matrix} of shape (n_unknowns, 1)
+#                 Element of the range space of A.
+#             x0 : {array-like, matrix} of shape (n_unknowns, 1)
+#                 Initial guess for the solution x. Defaults to all zeros.
+#             convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+#                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+#             projection operator taking x to its projection
+#                 onto the feasible set.
+
+#         Returns
+#         -------
+#         self : CCQPSolverAPGD
+#             The solved constrained convex quadratic problem.
+#         &#34;&#34;&#34;
+#         num_unknowns = b.shape[0]
+#         if convex_proj_op is None:
+#             convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+#         time_start = time.time()
+#         self._checkSolveInput(A, b, x0)
+
+#         print(&#34;solving MPRGP&#34;)
+#         mv_count = 0
+
+#         # set the initial guess if not given
+#         if x0 is None:
+#             x0 = np.zeros(num_unknowns)
+
+#         # Step 0: Initialization
+#         xk = convex_proj_op(x0)
+#         xkp1 = np.copy(xk)
+#         gk = A.dot(xk) + b
+#         gkp1 = np.copy(gk)
+#         mv_count += 1
+
+#         # check convergence, line 17 and Eq 25 of Mazhar 2015
+#         gd = 1e-6
+#         res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+#                              (xk - convex_proj_op(xk - gd * gk)))
+
+#         # skip the algorithm if the initial guess is correct.
+#         if res &gt;= self.desired_residual_tol:
+#             # compute the initial BB step size
+#             alpha_bb = gk.dot(gk) / (gk.dot(A.dot(gk)))
+#             mv_count += 1
+            
+#             # Line 4 of algorith 5.8
+#             delta_xk = np.isclose(xk, convex_proj_op(xk))
+#             p = delta_xk * gk
+
+#             while True:
+#                 # Precomputations
+#                 Axk = A.dot(xk)
+#                 mv_count += 1
+#                 if mv_count &gt;= self.max_matrix_vector_multiplications:
+#                     break
+#                 gk = Axk + b
+
+#                 # Prepotioning condition from line 6 of algorithm 5.8
+#                 delta_xk = np.isclose(xk, convex_proj_op(xk))
+#                 psi_xk = delta_xk * gk
+#                 n_xk = convex_proj_op.normal_vector(xk)
+#                 beta_xk = (1 - delta_xk) * (gk - np.min([0, n_xk.dot(gk)]) * n_xk)
+#                 if beta_xk.dot(beta_xk) &lt; psi_xk.dot(psi_xk):
+#                     # Precomputations
+#                     Ap = A.dot(p)
+#                     mv_count += 1
+#                     if mv_count &gt;= self.max_matrix_vector_multiplications:
+#                         break
+
+#                     # line 8 of algorithm 5.8
+#                     alpha_cg = psi_xk.dot(p) / p.dot(Ap)
+#                     y = xk - alpha_cg * p
+
+#                     # alternative to line 9 of algorithm 5.8
+#                     # here, we use recursive bisection to determine a step size 
+#                     # within the feasible solution space. 
+#                     alpha_f = alpha_cg + 10 * np.finfo(float).eps
+#                     while True:
+#                         yf = xk - alpha_f * p
+#                         if np.all(np.isclose(yf, convex_proj_op(yf))):
+#                             break
+#                         else:
+#                             alpha_f *= 0.5
+
+#                     # line 10-12 of algorithm 5.8
+#                     if alpha_cg &lt;= alpha_f:
+#                         # conjugate gradient step
+#                         # line 11 of algorithm 5.8
+#                         xkp1 = np.copy(y)
+#                         gkp1 = gk - alpha_cg * Ap
+
+#                         # line 12 of algorithm 5.8
+#                         delta_y = np.isclose(y, convex_proj_op(y))
+#                         psi_y = delta_y * gkp1
+#                         beta = psi_y * Ap / p.dot(Ap)
+#                         p = psi_y - beta * p
+#                     else:
+#                         # extension step using BB step size
+#                         # line 15. note, there is a typo. g = g - alphaf Ap. means 
+#                         # g^{k+1/2} = g^k - alphaf Ap.
+#                         xkphalf = xk - alpha_f * p
+#                         gkphalf = gk - alpha_f * Ap 
+
+#                         # line 16 with BB step
+#                         xkdiff = xkphalf - xk
+#                         gkdiff = gkphalf - gk
+#                         alpha = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+#                         xkp1 = convex_proj_op(xkphalf - alpha * gkphalf)
+                        
+#                         # reset the GC algorithm
+#                         # line 17
+#                         gkp1 = A.dot(xkp1) + b
+#                         mv_count += 1
+#                         if mv_count &gt;= self.max_matrix_vector_multiplications:
+#                             break
+
+#                         delta_xkp1 = np.isclose(xkp1, convex_proj_op(xkp1))
+#                         psi_xkp1 = delta_xkp1 * gkp1
+#                         p = np.copy(psi_xkp1)
+#                 else:
+#                     # proportioning step from line 20
+#                     d = beta_xk
+#                     Ad = A.dot(d)
+#                     mv_count += 1
+#                     if mv_count &gt;= self.max_matrix_vector_multiplications:
+#                         break
+
+#                     # line 21 but with BB step
+#                     xkp1 = convex_proj_op(xk - alpha_bb * gk)
+                    
+#                     xkdiff = xkp1 - xk
+#                     gkdiff = gkp1 - gk
+#                     alpha_bb = xkdiff.dot(xkdiff) / (xkdiff.dot(A.dot(xkdiff)) + 10 * np.finfo(float).eps)
+
+#                     gk = A.dot(xk) + b
+#                     mv_count += 1
+#                     if mv_count &gt;= self.max_matrix_vector_multiplications:
+#                         break
+
+#                     # reset the CG iteraton
+#                     delta_xkp1 = np.isclose(xkp1, convex_proj_op(xkp1))
+#                     psi_xkp1 = delta_xkp1 * gkp1
+#                     p = np.copy(psi_xkp1)
+
+#                 res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+#                         (xkp1 - convex_proj_op(xkp1 - gd * gkp1)))
+#                 if res &lt; self.desired_residual_tol:
+#                     break
+
+#                 # swap the contents of pointers directly, be careful
+#                 xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+#                 gk, gkp1 = np.frombuffer(gkp1), np.frombuffer(gk)
+
+#         self._solution = np.copy(xkp1)
+#         self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+#         self._solution_residual = res
+#         self._solution_num_matrix_vector_mults = mv_count
+#         time_stop = time.time()
+#         self._solution_time = time_stop - time_start
+
+#         return self
+
+#     @property
+#     def name(self):
+#         return &#34;MPRGP&#34;
+
+#     @property
+#     def solution(self):
+#         return self._solution
+
+#     @property
+#     def solution_residual(self):
+#         return self._solution_residual
+
+#     @property
+#     def solution_converged(self):
+#         return self._solution_converged
+
+#     @property
+#     def solution_time(self):
+#         return self._solution_time
+
+#     @property
+#     def solution_num_matrix_vector_multiplications(self):
+#         return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverAPGD</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the APGD algorithm</p>
+<h2 id="parameters">Parameters</h2>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverAPGD(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the APGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;APDG from Algorithm 6 of Pospisil 2015
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving APGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 to 3 of Pospisil 2015
+        xk = np.copy(x0)
+        yk = np.copy(x0)
+        thetak = 1.0
+        thetakp1 = 1.0
+
+        # line 4 of Pospisil 2015
+        xkdiff = xk - np.ones(num_unknowns)
+        AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+        xkdiffNorm2 = np.linalg.norm(xkdiff)
+        mv_count += 1
+
+        Lk = AxkdiffNorm2 / xkdiffNorm2
+        tk = 1.0 / Lk
+
+        # enter main loop
+        while True:
+            # line 7 of Mazhar 2015
+            # Axb = A yk, this does not change in the following Lipchitz loop
+            Ayk = A.dot(yk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            gk = Ayk + b
+
+            # line 5 of Pospisil 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+            rightTerm1 = yk.dot(Ayk) * 0.5
+            rightTerm2 = yk.dot(b)
+
+            while True:
+                # calc Lipchitz condition
+                Axkp1 = A.dot(xkp1)
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # line 9 of Mazhar 2015
+                leftTerm1 = xkp1.dot(Axkp1) * 0.5
+                leftTerm2 = xkp1.dot(b)
+
+                xkdiff = xkp1 - yk
+                rightTerm3 = gk.dot(xkdiff)
+                rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+                if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                    break
+
+                # line 10 &amp; 11 of Mazhar 2015
+                Lk *= 2
+                tk = 1.0 / Lk
+
+                # line 12 of Mazhar 2015
+                xkp1 = convex_proj_op(yk - tk * gk)
+
+            # line7 and 8 of Pospisil 2015
+            thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                              np.sqrt(4 + thetak * thetak))
+            betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+            ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+            # check convergence, line 4 of Pospisil 2015
+            # res = np.linalg.norm(
+            #     Lk * (xkp1 - convex_proj_op(xkp1 - tk * (Axkp1 + b))))
+            gd = 1e-6
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # next iteration
+            Lk *= 0.9
+            tk = 1.0 / Lk
+
+            # swap the contents of pointers directly, be careful
+            yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+            xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+            thetak = thetakp1
+
+        self._solution = np.copy(xkp1)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;APGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGD.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>APDG from Algorithm 6 of Pospisil 2015
+f(x) = x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverAPGD" href="#src.ccqppy.solvers.CCQPSolverAPGD">CCQPSolverAPGD</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;APDG from Algorithm 6 of Pospisil 2015
+    f(x) = x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverAPGD
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving APGD&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # line 1 to 3 of Pospisil 2015
+    xk = np.copy(x0)
+    yk = np.copy(x0)
+    thetak = 1.0
+    thetakp1 = 1.0
+
+    # line 4 of Pospisil 2015
+    xkdiff = xk - np.ones(num_unknowns)
+    AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+    xkdiffNorm2 = np.linalg.norm(xkdiff)
+    mv_count += 1
+
+    Lk = AxkdiffNorm2 / xkdiffNorm2
+    tk = 1.0 / Lk
+
+    # enter main loop
+    while True:
+        # line 7 of Mazhar 2015
+        # Axb = A yk, this does not change in the following Lipchitz loop
+        Ayk = A.dot(yk)
+        mv_count += 1
+        if mv_count &gt;= self.max_matrix_vector_multiplications:
+            break
+
+        gk = Ayk + b
+
+        # line 5 of Pospisil 2015
+        xkp1 = convex_proj_op(yk - tk * gk)
+
+        rightTerm1 = yk.dot(Ayk) * 0.5
+        rightTerm2 = yk.dot(b)
+
+        while True:
+            # calc Lipchitz condition
+            Axkp1 = A.dot(xkp1)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # line 9 of Mazhar 2015
+            leftTerm1 = xkp1.dot(Axkp1) * 0.5
+            leftTerm2 = xkp1.dot(b)
+
+            xkdiff = xkp1 - yk
+            rightTerm3 = gk.dot(xkdiff)
+            rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+            if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                break
+
+            # line 10 &amp; 11 of Mazhar 2015
+            Lk *= 2
+            tk = 1.0 / Lk
+
+            # line 12 of Mazhar 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+        # line7 and 8 of Pospisil 2015
+        thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                          np.sqrt(4 + thetak * thetak))
+        betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+        ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+        # check convergence, line 4 of Pospisil 2015
+        # res = np.linalg.norm(
+        #     Lk * (xkp1 - convex_proj_op(xkp1 - tk * (Axkp1 + b))))
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+        if res &lt; self.desired_residual_tol:
+            break
+
+        # next iteration
+        Lk *= 0.9
+        tk = 1.0 / Lk
+
+        # swap the contents of pointers directly, be careful
+        yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+        xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+        thetak = thetakp1
+
+    self._solution = np.copy(xkp1)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverAPGDAntiRelaxation</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the APGD algorithm</p>
+<h2 id="parameters">Parameters</h2>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverAPGDAntiRelaxation(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the APGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;APDG with anti-relaxation from Mazhar 2015
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving APGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 and 2 of Mazhar 2015
+        xk = np.copy(x0)
+        yk = np.copy(x0)
+        xhatk = np.ones(num_unknowns)
+
+        # line 3 of Mazhar 2015
+        thetak = 1.0
+        thetakp1 = 1.0
+
+        # line 4 and 5 of Mazhar 2015
+        xkdiff = xk - xhatk
+        AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+        xkdiffNorm2 = np.linalg.norm(xkdiff)
+        mv_count += 1
+
+        Lk = AxkdiffNorm2 / xkdiffNorm2
+        tk = 1.0 / Lk
+
+        # enter main loop
+        resmin = np.inf
+        while True:
+            # line 7 of Mazhar 2015
+            # Axb = A yk, this does not change in the following Lipchitz loop
+            Ayk = A.dot(yk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            gk = Ayk + b
+
+            # line 8 of Mazhar 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+            rightTerm1 = yk.dot(Ayk) * 0.5
+            rightTerm2 = yk.dot(b)
+
+            while True:
+                # calc Lipchitz condition
+                Axkp1 = A.dot(xkp1)
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # line 9 of Mazhar 2015
+                leftTerm1 = xkp1.dot(Axkp1) * 0.5
+                leftTerm2 = xkp1.dot(b)
+
+                xkdiff = xkp1 - yk
+                rightTerm3 = gk.dot(xkdiff)
+                rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+                if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                    break
+
+                # line 10 &amp; 11 of Mazhar 2015
+                Lk *= 2
+                tk = 1.0 / Lk
+
+                # line 12 of Mazhar 2015
+                xkp1 = convex_proj_op(yk - tk * gk)
+
+            # line 14-16 of Mazhar 2015
+            thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                              np.sqrt(4 + thetak * thetak))
+            betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+            ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+            # check convergence, line 17 and Eq 25 of Mazhar 2015
+            gd = 1e-6
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+
+            # line 18-21 of Mazhar 2015
+            if res &lt; resmin:
+                resmin = res
+                xhatk = np.copy(xkp1)
+
+            # line 22-24 of Mazhar 2015
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # line 25-28 of Mazhar 2015
+            if gk.dot(xkp1 - xk) &gt; 0:
+                ykp1 = np.copy(xkp1)
+                thetakp1 = 1
+
+            # line 29-30 of Mazhar 2015
+            Lk *= 0.9
+            tk = 1.0 / Lk
+
+            # next iteration
+            # swap the contents of pointers directly, be careful
+            yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+            xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+            thetak = thetakp1
+
+        # line 32 of Maxhar 2015
+        self._solution = np.copy(xhatk)
+
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;Anti-relaxation APGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>APDG with anti-relaxation from Mazhar 2015
+f(x) = x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverAPGD" href="#src.ccqppy.solvers.CCQPSolverAPGD">CCQPSolverAPGD</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;APDG with anti-relaxation from Mazhar 2015
+    f(x) = x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverAPGD
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving APGD&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # line 1 and 2 of Mazhar 2015
+    xk = np.copy(x0)
+    yk = np.copy(x0)
+    xhatk = np.ones(num_unknowns)
+
+    # line 3 of Mazhar 2015
+    thetak = 1.0
+    thetakp1 = 1.0
+
+    # line 4 and 5 of Mazhar 2015
+    xkdiff = xk - xhatk
+    AxkdiffNorm2 = np.linalg.norm(A.dot(xkdiff))
+    xkdiffNorm2 = np.linalg.norm(xkdiff)
+    mv_count += 1
+
+    Lk = AxkdiffNorm2 / xkdiffNorm2
+    tk = 1.0 / Lk
+
+    # enter main loop
+    resmin = np.inf
+    while True:
+        # line 7 of Mazhar 2015
+        # Axb = A yk, this does not change in the following Lipchitz loop
+        Ayk = A.dot(yk)
+        mv_count += 1
+        if mv_count &gt;= self.max_matrix_vector_multiplications:
+            break
+
+        gk = Ayk + b
+
+        # line 8 of Mazhar 2015
+        xkp1 = convex_proj_op(yk - tk * gk)
+
+        rightTerm1 = yk.dot(Ayk) * 0.5
+        rightTerm2 = yk.dot(b)
+
+        while True:
+            # calc Lipchitz condition
+            Axkp1 = A.dot(xkp1)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # line 9 of Mazhar 2015
+            leftTerm1 = xkp1.dot(Axkp1) * 0.5
+            leftTerm2 = xkp1.dot(b)
+
+            xkdiff = xkp1 - yk
+            rightTerm3 = gk.dot(xkdiff)
+            rightTerm4 = 0.5 * Lk * xkdiff.dot(xkdiff)
+            if (leftTerm1 + leftTerm2) &lt;= (rightTerm1 + rightTerm2 + rightTerm3 + rightTerm4):
+                break
+
+            # line 10 &amp; 11 of Mazhar 2015
+            Lk *= 2
+            tk = 1.0 / Lk
+
+            # line 12 of Mazhar 2015
+            xkp1 = convex_proj_op(yk - tk * gk)
+
+        # line 14-16 of Mazhar 2015
+        thetakp1 = 0.5 * (-thetak * thetak + thetak *
+                          np.sqrt(4 + thetak * thetak))
+        betakp1 = thetak * (1 - thetak) / (thetak * thetak + thetakp1)
+        ykp1 = (1 + betakp1) * xkp1 - betakp1 * xk
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkp1 - convex_proj_op(xkp1 - gd * (Axkp1 + b))))
+
+        # line 18-21 of Mazhar 2015
+        if res &lt; resmin:
+            resmin = res
+            xhatk = np.copy(xkp1)
+
+        # line 22-24 of Mazhar 2015
+        if res &lt; self.desired_residual_tol:
+            break
+
+        # line 25-28 of Mazhar 2015
+        if gk.dot(xkp1 - xk) &gt; 0:
+            ykp1 = np.copy(xkp1)
+            thetakp1 = 1
+
+        # line 29-30 of Mazhar 2015
+        Lk *= 0.9
+        tk = 1.0 / Lk
+
+        # next iteration
+        # swap the contents of pointers directly, be careful
+        yk, ykp1 = np.frombuffer(ykp1), np.frombuffer(yk)
+        xk, xkp1 = np.frombuffer(xkp1), np.frombuffer(xk)
+        thetak = thetakp1
+
+    # line 32 of Maxhar 2015
+    self._solution = np.copy(xhatk)
+
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverBBPGD</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the BBPGD algorithm</p>
+<h2 id="parameters">Parameters</h2>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverBBPGD(CCQPSolverBase):
+    &#34;&#34;&#34; Concrete implementation of the BBPGD algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;BBPGD from Algorithm 1 of Yan 2019
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBBPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving BBPGDf&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # update variables for iteration
+                xkdiff = xk - xkm1
+                gkdiff = gk - gkm1
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;BBGPD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGD.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>BBPGD from Algorithm 1 of Yan 2019
+f(x) = x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverBBPGD" href="#src.ccqppy.solvers.CCQPSolverBBPGD">CCQPSolverBBPGD</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;BBPGD from Algorithm 1 of Yan 2019
+    f(x) = x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverBBPGD
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving BBPGDf&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # initial variables
+    xk = np.copy(x0)
+    xkm1 = np.copy(x0)
+
+    # lines 1 to 4 of Yan 2019
+    gkm1 = A.dot(xkm1) + b
+    mv_count += 1
+
+    # check convergence, line 17 and Eq 25 of Mazhar 2015
+    gd = 1e-6
+    res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                         (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+    # skip the algorithm if the initial guess is correct.
+    if res &gt;= self.desired_residual_tol:
+        alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+        while True:
+            # perform the gradient descent step
+            xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+            # get the new gradient
+            gk = A.dot(xk) + b
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # check for convergence, line 17 and Eq 25 of Mazhar 2015
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xk - convex_proj_op(xk - gd * gk)))
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # update variables for iteration
+            xkdiff = xk - xkm1
+            gkdiff = gk - gkm1
+            alpha = xkdiff.dot(
+                xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+            # swap the contents of pointers directly, be careful
+            xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+            gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+    self._solution = np.copy(xk)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverBBPGDf</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the BBPGD with fallback algorithm</p>
+<h2 id="parameters">Parameters</h2>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverBBPGDf(CCQPSolverBase):
+    &#34;&#34;&#34; Concrete implementation of the BBPGD with fallback algorithm
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;BBPGD with fallback from Algorithm 5 of Pospisil 2015b
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBBPGDf
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving BBPGDf&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        # lines 1 and 2 of Pospisil 2015
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        xmin = np.copy(x0)
+        gmin = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        resmin = np.inf
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # fallback
+                if res &lt; resmin:
+                    resmin = np.copy(res)
+                    xmin = np.copy(xk)
+                    gmin = np.copy(gk)
+
+                # apply fallback upon stagnation
+                if alpha  &lt; 10 * np.finfo(float).eps:
+                    xk = convex_proj_op(xmin - gd * gmin)
+
+                # update variables for iteration
+                xkdiff = xk - xkm1
+                gkdiff = gk - gkm1
+                alpha = xkdiff.dot(
+                    xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;BBPDGf&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBBPGDf.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>BBPGD with fallback from Algorithm 5 of Pospisil 2015b
+f(x) = x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf" href="#src.ccqppy.solvers.CCQPSolverBBPGDf">CCQPSolverBBPGDf</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;BBPGD with fallback from Algorithm 5 of Pospisil 2015b
+    f(x) = x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverBBPGDf
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving BBPGDf&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # initial variables
+    # lines 1 and 2 of Pospisil 2015
+    xk = np.copy(x0)
+    xkm1 = np.copy(x0)
+
+    xmin = np.copy(x0)
+    gmin = np.copy(x0)
+
+    # lines 1 to 4 of Yan 2019
+    gkm1 = A.dot(xkm1) + b
+    mv_count += 1
+
+    # check convergence, line 17 and Eq 25 of Mazhar 2015
+    gd = 1e-6
+    res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                         (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+    resmin = np.inf
+    # skip the algorithm if the initial guess is correct.
+    if res &gt;= self.desired_residual_tol:
+        alpha = gkm1.dot(gkm1) / (gkm1.dot(A.dot(gkm1)))
+        while True:
+            # perform the gradient descent step
+            xk = convex_proj_op(xkm1 - alpha * gkm1)
+
+            # get the new gradient
+            gk = A.dot(xk) + b
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # check for convergence, line 17 and Eq 25 of Mazhar 2015
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xk - convex_proj_op(xk - gd * gk)))
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # fallback
+            if res &lt; resmin:
+                resmin = np.copy(res)
+                xmin = np.copy(xk)
+                gmin = np.copy(gk)
+
+            # apply fallback upon stagnation
+            if alpha  &lt; 10 * np.finfo(float).eps:
+                xk = convex_proj_op(xmin - gd * gmin)
+
+            # update variables for iteration
+            xkdiff = xk - xkm1
+            gkdiff = gk - gkm1
+            alpha = xkdiff.dot(
+                xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+
+            # swap the contents of pointers directly, be careful
+            xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+            gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+    self._solution = np.copy(xk)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverBase</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multipliciations=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract base class for constrained quadratic programming problems.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverBase(ABC):
+    &#34;&#34;&#34;Abstract base class for constrained quadratic programming problems.&#34;&#34;&#34;
+
+    @abstractmethod
+    def __init__(self, desired_residual_tol, max_matrix_vector_multipliciations=np.inf):
+        pass
+
+    @abstractmethod
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;
+        f(x) = x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+                projection operator taking x to its projection onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverBase
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        pass
+
+    def _checkSolveInput(self, A, b, x0):
+        pass
+
+    @abstractproperty
+    def name(self):
+        &#34;&#34;&#34;Return the name of the solver.&#34;&#34;&#34;
+        pass
+
+    @abstractproperty
+    def solution(self):
+        pass
+
+    @abstractproperty
+    def solution_residual(self):
+        pass
+
+    @abstractproperty
+    def solution_converged(self):
+        pass
+
+    @abstractproperty
+    def solution_time(self):
+        pass
+
+    @abstractproperty
+    def solution_num_matrix_vector_multiplications(self):
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverAPGD" href="#src.ccqppy.solvers.CCQPSolverAPGD">CCQPSolverAPGD</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation">CCQPSolverAPGDAntiRelaxation</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverBBPGD" href="#src.ccqppy.solvers.CCQPSolverBBPGD">CCQPSolverBBPGD</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverBBPGDf" href="#src.ccqppy.solvers.CCQPSolverBBPGDf">CCQPSolverBBPGDf</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB">CCQPSolverMPRGPBB</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverPGD" href="#src.ccqppy.solvers.CCQPSolverPGD">CCQPSolverPGD</a></li>
+<li><a title="src.ccqppy.solvers.CCQPSolverSPG" href="#src.ccqppy.solvers.CCQPSolverSPG">CCQPSolverSPG</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"><p>Return the name of the solver.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def name(self):
+    &#34;&#34;&#34;Return the name of the solver.&#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def solution(self):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def solution_converged(self):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def solution_num_matrix_vector_multiplications(self):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def solution_residual(self):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractproperty
+def solution_time(self):
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverBase.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>f(x) = x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+    projection operator taking x to its projection onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;
+    f(x) = x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverBase
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverMPRGPBB</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the MPRGP algorithm
+from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS</p>
+<h2 id="parameters">Parameters</h2>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverMPRGPBB(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the MPRGP algorithm
+    from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS
+
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None, Gamma=1, v=0):
+        &#34;&#34;&#34;MPRGP
+        f(x) = 1/2 x^T A x - x^T b
+
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+
+        Returns
+        -------
+        self : CCQPSolverAPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+        print(&#34;solving MPRGP-BB&#34;)
+        mv_count = 0
+
+        # Step 0: Initialization (Alg 5.8 Polyak&#39;s algorithm)
+        k = 0
+        alpha_bar = 2/np.linalg.norm(A,np.inf)
+        xk = convex_proj_op(x0)
+        gk = A.dot(xk) - b
+        alpha_bb = 0 # gk.dot(gk) / (gk.dot(A.dot(gk)))
+        psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,gk) 
+        p = psi_xk 
+        mv_count += 2
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xk - convex_proj_op(xk - gd * gk)))
+        
+        while res &gt;= self.desired_residual_tol:
+            bnorm = beta_xk.dot(beta_xk)
+            psinorm =psi_xk.dot(psi_xk)
+            if v:
+                print(f&#34;It-{k}\tres={res:.5f}\t||psixk||={psinorm:.7f}\t||bnorm||={psinorm:.7f}&#34;)
+            if v==2:
+                print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+            if bnorm&lt; (Gamma**2)*psinorm:
+                # Step 1. Trial conjugate gradient step
+                alpha_cg = gk.dot(p)/(p.dot(A.dot(gk))+1e-10)
+                mv_count+=1
+                y = xk - alpha_cg*p
+                xkp1 = np.copy(xk)
+                
+                alpha_f = alpha_cg + 10*np.finfo(float).eps
+                while True:
+                    yf = xk - alpha_f * p
+                    if np.all(np.isclose(yf, convex_proj_op(yf))):
+                        break
+                    else:
+                        alpha_f *= 0.8
+                if v:
+                    print(f&#34;It-{k} Step.1: alpha_cg={alpha_cg:.10f},\talpha_f={alpha_f:.10f}&#34;)
+                if v==2:
+                    print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+                if alpha_cg &lt;= alpha_f: # Step 2. Conjugate gradient step
+                    xk = y
+                    gk = gk - alpha_cg*A.dot(p)
+                    psi_y, beta_y = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    beta = psi_y.dot(A.dot(p))/(p.dot(A.dot(p))+1e-10)
+                    p = psi_y - beta*p
+                    mv_count+=3
+                    if v:
+                        print(f&#34;It-{k} Step.2: beta={beta:.5f}\t ||psi_y||={np.linalg.norm(psi_y):.4f}\t ||beta_y||={np.linalg.norm(beta_y):.4f}&#34;)
+                    if v==2:
+                        print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+                else: # Step 3. Expansion step
+                    xk = xk - alpha_f*p
+                    gk = gk - alpha_f*A.dot(p)
+                    psi_xhalf, beta_half = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    xk = convex_proj_op(xk-alpha_bar*psi_xhalf)
+                    gk = A.dot(xk)-b
+                    mv_count+=2
+                    psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                    p = psi_xk
+                    if v:
+                        print(f&#34;It-{k} Step.3: beta={alpha_f:.5f}\t ||psi_xhalf||={np.linalg.norm(psi_xhalf):.4f}\t ||beta_half||={np.linalg.norm(beta_half):.4f}&#34;)
+            else: # Step 4. Proportioning step
+                if alpha_bb == 0:
+                    alpha_bb = gk.dot(gk) / ( gk.dot(A.dot(gk)) +1e-10)
+                else:
+                    alpha_bb = (xk-xkp1)@(xk-xkp1)/((xk-xkp1)@A.dot(xk-xkp1)+1e-10)
+                xkp1 = np.copy(xk)
+                gk = A.dot(xk)-b
+                xk = convex_proj_op(xk-alpha_bb*gk)
+                psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                p = psi_xk
+                mv_count += 2
+                if v:
+                    print(f&#34;It-{k} Step.3: alpha_bb={alpha_bb:.4f}\t ||psi_xk||={np.linalg.norm(psi_xk):.4f}\t ||beta_xk||={np.linalg.norm(beta_xk):.4f}&#34;)
+                
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+            
+            k = k+1
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                    (xk - convex_proj_op(xk - gd * gk)))
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;MPGP-BB&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverMPRGPBB.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None, Gamma=1, v=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MPRGP
+f(x) = 1/2 x^T A x - x^T b</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverAPGD" href="#src.ccqppy.solvers.CCQPSolverAPGD">CCQPSolverAPGD</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None, Gamma=1, v=0):
+    &#34;&#34;&#34;MPRGP
+    f(x) = 1/2 x^T A x - x^T b
+
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+
+    Returns
+    -------
+    self : CCQPSolverAPGD
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+    print(&#34;solving MPRGP-BB&#34;)
+    mv_count = 0
+
+    # Step 0: Initialization (Alg 5.8 Polyak&#39;s algorithm)
+    k = 0
+    alpha_bar = 2/np.linalg.norm(A,np.inf)
+    xk = convex_proj_op(x0)
+    gk = A.dot(xk) - b
+    alpha_bb = 0 # gk.dot(gk) / (gk.dot(A.dot(gk)))
+    psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,gk) 
+    p = psi_xk 
+    mv_count += 2
+
+    # check convergence, line 17 and Eq 25 of Mazhar 2015
+    gd = 1e-6
+    res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                         (xk - convex_proj_op(xk - gd * gk)))
+    
+    while res &gt;= self.desired_residual_tol:
+        bnorm = beta_xk.dot(beta_xk)
+        psinorm =psi_xk.dot(psi_xk)
+        if v:
+            print(f&#34;It-{k}\tres={res:.5f}\t||psixk||={psinorm:.7f}\t||bnorm||={psinorm:.7f}&#34;)
+        if v==2:
+            print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+        if bnorm&lt; (Gamma**2)*psinorm:
+            # Step 1. Trial conjugate gradient step
+            alpha_cg = gk.dot(p)/(p.dot(A.dot(gk))+1e-10)
+            mv_count+=1
+            y = xk - alpha_cg*p
+            xkp1 = np.copy(xk)
+            
+            alpha_f = alpha_cg + 10*np.finfo(float).eps
+            while True:
+                yf = xk - alpha_f * p
+                if np.all(np.isclose(yf, convex_proj_op(yf))):
+                    break
+                else:
+                    alpha_f *= 0.8
+            if v:
+                print(f&#34;It-{k} Step.1: alpha_cg={alpha_cg:.10f},\talpha_f={alpha_f:.10f}&#34;)
+            if v==2:
+                print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+            if alpha_cg &lt;= alpha_f: # Step 2. Conjugate gradient step
+                xk = y
+                gk = gk - alpha_cg*A.dot(p)
+                psi_y, beta_y = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                beta = psi_y.dot(A.dot(p))/(p.dot(A.dot(p))+1e-10)
+                p = psi_y - beta*p
+                mv_count+=3
+                if v:
+                    print(f&#34;It-{k} Step.2: beta={beta:.5f}\t ||psi_y||={np.linalg.norm(psi_y):.4f}\t ||beta_y||={np.linalg.norm(beta_y):.4f}&#34;)
+                if v==2:
+                    print(f&#34;xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}&#34;)
+            else: # Step 3. Expansion step
+                xk = xk - alpha_f*p
+                gk = gk - alpha_f*A.dot(p)
+                psi_xhalf, beta_half = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                xk = convex_proj_op(xk-alpha_bar*psi_xhalf)
+                gk = A.dot(xk)-b
+                mv_count+=2
+                psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                p = psi_xk
+                if v:
+                    print(f&#34;It-{k} Step.3: beta={alpha_f:.5f}\t ||psi_xhalf||={np.linalg.norm(psi_xhalf):.4f}\t ||beta_half||={np.linalg.norm(beta_half):.4f}&#34;)
+        else: # Step 4. Proportioning step
+            if alpha_bb == 0:
+                alpha_bb = gk.dot(gk) / ( gk.dot(A.dot(gk)) +1e-10)
+            else:
+                alpha_bb = (xk-xkp1)@(xk-xkp1)/((xk-xkp1)@A.dot(xk-xkp1)+1e-10)
+            xkp1 = np.copy(xk)
+            gk = A.dot(xk)-b
+            xk = convex_proj_op(xk-alpha_bb*gk)
+            psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+            p = psi_xk
+            mv_count += 2
+            if v:
+                print(f&#34;It-{k} Step.3: alpha_bb={alpha_bb:.4f}\t ||psi_xk||={np.linalg.norm(psi_xk):.4f}\t ||beta_xk||={np.linalg.norm(beta_xk):.4f}&#34;)
+            
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+        
+        k = k+1
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                (xk - convex_proj_op(xk - gd * gk)))
+
+    self._solution = np.copy(xk)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverPGD</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf, step_size=0.01)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of PGD algorithm
+Parameters</p>
+<hr>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverPGD(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of PGD algorithm
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf, step_size=0.01):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+        self.step_size = step_size
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;Baseline PGD
+        f(x) = x^T A x - x^T b
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+        Returns
+        -------
+        self : CCQPSolverPGD
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving PGD&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # initial variables
+        xk = np.copy(x0)
+        xkm1 = np.copy(x0)
+
+        # lines 1 to 4 of Yan 2019
+        gkm1 = A.dot(xkm1) + b
+        mv_count += 1
+
+        # check convergence, line 17 and Eq 25 of Mazhar 2015
+        gd = 1e-6
+        res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                             (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+        # skip the algorithm if the initial guess is correct.
+        if res &gt;= self.desired_residual_tol:
+            while True:
+                # perform the gradient descent step
+                xk = convex_proj_op(xkm1 - self.step_size * gkm1)
+
+                # get the new gradient
+                gk = A.dot(xk) + b
+                mv_count += 1
+                if mv_count &gt;= self.max_matrix_vector_multiplications:
+                    break
+
+                # check for convergence, line 17 and Eq 25 of Mazhar 2015
+                res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                     (xk - convex_proj_op(xk - gd * gk)))
+                if res &lt; self.desired_residual_tol:
+                    break
+
+                # swap the contents of pointers directly, be careful
+                xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+                gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = res
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;PGD&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverPGD.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Baseline PGD
+f(x) = x^T A x - x^T b
+Parameters</p>
+<hr>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverPGD" href="#src.ccqppy.solvers.CCQPSolverPGD">CCQPSolverPGD</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;Baseline PGD
+    f(x) = x^T A x - x^T b
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+    Returns
+    -------
+    self : CCQPSolverPGD
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving PGD&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # initial variables
+    xk = np.copy(x0)
+    xkm1 = np.copy(x0)
+
+    # lines 1 to 4 of Yan 2019
+    gkm1 = A.dot(xkm1) + b
+    mv_count += 1
+
+    # check convergence, line 17 and Eq 25 of Mazhar 2015
+    gd = 1e-6
+    res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                         (xkm1 - convex_proj_op(xkm1 - gd * gkm1)))
+
+    # skip the algorithm if the initial guess is correct.
+    if res &gt;= self.desired_residual_tol:
+        while True:
+            # perform the gradient descent step
+            xk = convex_proj_op(xkm1 - self.step_size * gkm1)
+
+            # get the new gradient
+            gk = A.dot(xk) + b
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # check for convergence, line 17 and Eq 25 of Mazhar 2015
+            res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
+                                 (xk - convex_proj_op(xk - gd * gk)))
+            if res &lt; self.desired_residual_tol:
+                break
+
+            # swap the contents of pointers directly, be careful
+            xk, xkm1 = np.frombuffer(xkm1), np.frombuffer(xk)
+            gk, gkm1 = np.frombuffer(gkm1), np.frombuffer(gk)
+
+    self._solution = np.copy(xk)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = res
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG"><code class="flex name class">
+<span>class <span class="ident">CCQPSolverSPG</span></span>
+<span>(</span><span>desired_residual_tol, max_matrix_vector_multiplications=inf, m=5, tau=0.5, sigma1=0.01, sigma2=0.5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Concrete implementation of the SPG-QP algorithm
+Parameters</p>
+<hr>
+<p>desired_residual_tol : numerical_type or None.
+desired residual to accept the iterative solution.
+max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+Maximum number of matrix-vector multiplies before the solver is terminated early.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CCQPSolverSPG(CCQPSolverBase):
+    &#34;&#34;&#34;Concrete implementation of the SPG-QP algorithm
+    Parameters
+    ----------
+    desired_residual_tol : numerical_type or None.
+        desired residual to accept the iterative solution.
+    max_matrix_vector_multiplications : numerical_type or None. Defaults to infinity.
+        Maximum number of matrix-vector multiplies before the solver is terminated early.
+    &#34;&#34;&#34;
+
+    def __init__(self, desired_residual_tol, max_matrix_vector_multiplications=np.inf,
+                 m=5, tau=0.5, sigma1=0.01, sigma2=0.5):
+        # store the user input
+        self.desired_residual_tol = desired_residual_tol
+        self.max_matrix_vector_multiplications = max_matrix_vector_multiplications
+
+        # initialize the internal data
+        self._solution = None
+        self._solution_residual = None
+        self._solution_converged = None
+        self._solution_time = None
+        self._solution_num_matrix_vector_mults = None
+
+        # New inputs
+        self.m = m
+        self.t = tau
+        self.sigma1 = sigma1
+        self.sigma2 = sigma2
+
+    def cost_func(A, b, x):
+        return 0.5 * np.dot(x, np.dot(A, x)) - np.dot(b, x)
+
+    def solve(self, A, b, x0=None, convex_proj_op=None):
+        &#34;&#34;&#34;SPG-QP from Algorithm 5 of Pospisil 2018
+        f(x) = x^T A x - x^T b
+        Parameters
+        ----------
+            A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+                Hessian matrix of f(x).
+            b : {array-like, matrix} of shape (n_unknowns, 1)
+                Element of the range space of A.
+            k : {integer} of shape (n)
+                Number of iterations for this algorithm to compute.
+            m : {integer} of shape(n)
+                Number of previous iterations used to compute max value of objective function.
+                Large m creates more stable convergence, though it is computationally heavy.
+            t : {integer} of shape (n) between 0 and 1.
+                Amount of safeguarding, used to scale step size.
+                Small tau means small step size and vice versa.
+            x0 : {array-like, matrix} of shape (n_unknowns, 1)
+                Initial guess for the solution x. Defaults to all zeros.
+            convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+                to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+            projection operator taking x to its projection
+                onto the feasible set.
+        Returns
+        -------
+        self : CCQPSolverSPG
+            The solved constrained convex quadratic problem.
+        &#34;&#34;&#34;
+        num_unknowns = b.shape[0]
+        if convex_proj_op is None:
+            convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+        time_start = time.time()
+        self._checkSolveInput(A, b, x0)
+
+        print(&#34;solving SPG&#34;)
+        mv_count = 0
+
+        # set the initial guess if not given
+        if x0 is None:
+            x0 = np.zeros(num_unknowns)
+
+        # line 1 to 3 of Pospisil 2018
+        xk = np.copy(x0)
+        gk = A.dot(xk) + b
+        fk = np.dot(gk, xk)
+        alpha = gk.dot(gk) / (gk.dot(A.dot(gk)))
+        mv_count += 2
+
+        tau = self.t
+        m = self.m
+        sig1 = self.sigma1
+        sig2 = self.sigma2
+        fk_queue = deque(maxlen=m)
+        fk_queue.append(fk)
+
+        # enter main loop
+        while True:
+            # alpha is the step size
+            dk = convex_proj_op(xk - alpha * gk) - xk
+            Adk = A.dot(dk)
+            mv_count += 1
+            if mv_count &gt;= self.max_matrix_vector_multiplications:
+                break
+
+            # Precompute the dot products, line 7 of Popisil 2018
+            dkdotdk = np.dot(dk, dk)
+            dkdotAdk = np.dot(dk, Adk)
+            dkdotgk = np.dot(dk, gk)
+
+            # Breaking conditions
+            if np.sqrt(dkdotdk) &lt;= self.desired_residual_tol:
+                break
+
+            # line 9 of popisil 2018
+            fmax = max(fk_queue)
+
+            # lines 10-18 of popisil 2018
+            xi = (fmax - fk) / dkdotAdk
+            beta = -dkdotgk / dkdotAdk
+            betahat = tau * beta + np.sqrt((tau** 2) * (beta** 2) + 2 * xi)
+            betak = np.random.uniform(low=sig1, high=min(betahat, sig2))
+
+            xk += betak * dk
+            gk += betak * Adk
+            fk += betak * betak * dkdotgk + 0.5 * (betak ** 2) * dkdotAdk
+            fk_queue.append(fk)
+
+            alpha = dkdotdk / dkdotAdk
+
+        self._solution = np.copy(xk)
+        self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+        self._solution_residual = np.sqrt(dkdotdk)
+        self._solution_num_matrix_vector_mults = mv_count
+        time_stop = time.time()
+        self._solution_time = time_stop - time_start
+
+        return self
+
+    @property
+    def name(self):
+        return &#34;SPG-QP&#34;
+
+    @property
+    def solution(self):
+        return self._solution
+
+    @property
+    def solution_residual(self):
+        return self._solution_residual
+
+    @property
+    def solution_converged(self):
+        return self._solution_converged
+
+    @property
+    def solution_time(self):
+        return self._solution_time
+
+    @property
+    def solution_num_matrix_vector_multiplications(self):
+        return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solution"><code class="name">var <span class="ident">solution</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution(self):
+    return self._solution</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solution_converged"><code class="name">var <span class="ident">solution_converged</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_converged(self):
+    return self._solution_converged</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solution_num_matrix_vector_multiplications"><code class="name">var <span class="ident">solution_num_matrix_vector_multiplications</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_num_matrix_vector_multiplications(self):
+    return self._solution_num_matrix_vector_mults</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solution_residual"><code class="name">var <span class="ident">solution_residual</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_residual(self):
+    return self._solution_residual</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solution_time"><code class="name">var <span class="ident">solution_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def solution_time(self):
+    return self._solution_time</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.cost_func"><code class="name flex">
+<span>def <span class="ident">cost_func</span></span>(<span>A, b, x)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cost_func(A, b, x):
+    return 0.5 * np.dot(x, np.dot(A, x)) - np.dot(b, x)</code></pre>
+</details>
+</dd>
+<dt id="src.ccqppy.solvers.CCQPSolverSPG.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, A, b, x0=None, convex_proj_op=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SPG-QP from Algorithm 5 of Pospisil 2018
+f(x) = x^T A x - x^T b
+Parameters</p>
+<hr>
+<pre><code>A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+    Hessian matrix of f(x).
+b : {array-like, matrix} of shape (n_unknowns, 1)
+    Element of the range space of A.
+k : {integer} of shape (n)
+    Number of iterations for this algorithm to compute.
+m : {integer} of shape(n)
+    Number of previous iterations used to compute max value of objective function.
+    Large m creates more stable convergence, though it is computationally heavy.
+t : {integer} of shape (n) between 0 and 1.
+    Amount of safeguarding, used to scale step size.
+    Small tau means small step size and vice versa.
+x0 : {array-like, matrix} of shape (n_unknowns, 1)
+    Initial guess for the solution x. Defaults to all zeros.
+convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1)                 to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+projection operator taking x to its projection
+    onto the feasible set.
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>self</code></strong> :&ensp;<code><a title="src.ccqppy.solvers.CCQPSolverSPG" href="#src.ccqppy.solvers.CCQPSolverSPG">CCQPSolverSPG</a></code></dt>
+<dd>The solved constrained convex quadratic problem.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, A, b, x0=None, convex_proj_op=None):
+    &#34;&#34;&#34;SPG-QP from Algorithm 5 of Pospisil 2018
+    f(x) = x^T A x - x^T b
+    Parameters
+    ----------
+        A : {array-like, matrix} of shape (n_unknowns, n_unknowns)
+            Hessian matrix of f(x).
+        b : {array-like, matrix} of shape (n_unknowns, 1)
+            Element of the range space of A.
+        k : {integer} of shape (n)
+            Number of iterations for this algorithm to compute.
+        m : {integer} of shape(n)
+            Number of previous iterations used to compute max value of objective function.
+            Large m creates more stable convergence, though it is computationally heavy.
+        t : {integer} of shape (n) between 0 and 1.
+            Amount of safeguarding, used to scale step size.
+            Small tau means small step size and vice versa.
+        x0 : {array-like, matrix} of shape (n_unknowns, 1)
+            Initial guess for the solution x. Defaults to all zeros.
+        convex_proj_op : {func(x)} taking array-like x of shape (n_unknowns, 1) \
+            to its projection x_proj also of shape (n_unknowns, 1). Defaults to IdentityProjOp.
+        projection operator taking x to its projection
+            onto the feasible set.
+    Returns
+    -------
+    self : CCQPSolverSPG
+        The solved constrained convex quadratic problem.
+    &#34;&#34;&#34;
+    num_unknowns = b.shape[0]
+    if convex_proj_op is None:
+        convex_proj_op = ss.IdentityProjOp(num_unknowns)
+
+    time_start = time.time()
+    self._checkSolveInput(A, b, x0)
+
+    print(&#34;solving SPG&#34;)
+    mv_count = 0
+
+    # set the initial guess if not given
+    if x0 is None:
+        x0 = np.zeros(num_unknowns)
+
+    # line 1 to 3 of Pospisil 2018
+    xk = np.copy(x0)
+    gk = A.dot(xk) + b
+    fk = np.dot(gk, xk)
+    alpha = gk.dot(gk) / (gk.dot(A.dot(gk)))
+    mv_count += 2
+
+    tau = self.t
+    m = self.m
+    sig1 = self.sigma1
+    sig2 = self.sigma2
+    fk_queue = deque(maxlen=m)
+    fk_queue.append(fk)
+
+    # enter main loop
+    while True:
+        # alpha is the step size
+        dk = convex_proj_op(xk - alpha * gk) - xk
+        Adk = A.dot(dk)
+        mv_count += 1
+        if mv_count &gt;= self.max_matrix_vector_multiplications:
+            break
+
+        # Precompute the dot products, line 7 of Popisil 2018
+        dkdotdk = np.dot(dk, dk)
+        dkdotAdk = np.dot(dk, Adk)
+        dkdotgk = np.dot(dk, gk)
+
+        # Breaking conditions
+        if np.sqrt(dkdotdk) &lt;= self.desired_residual_tol:
+            break
+
+        # line 9 of popisil 2018
+        fmax = max(fk_queue)
+
+        # lines 10-18 of popisil 2018
+        xi = (fmax - fk) / dkdotAdk
+        beta = -dkdotgk / dkdotAdk
+        betahat = tau * beta + np.sqrt((tau** 2) * (beta** 2) + 2 * xi)
+        betak = np.random.uniform(low=sig1, high=min(betahat, sig2))
+
+        xk += betak * dk
+        gk += betak * Adk
+        fk += betak * betak * dkdotgk + 0.5 * (betak ** 2) * dkdotAdk
+        fk_queue.append(fk)
+
+        alpha = dkdotdk / dkdotAdk
+
+    self._solution = np.copy(xk)
+    self._solution_converged = mv_count &lt; self.max_matrix_vector_multiplications
+    self._solution_residual = np.sqrt(dkdotdk)
+    self._solution_num_matrix_vector_mults = mv_count
+    time_stop = time.time()
+    self._solution_time = time_stop - time_start
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.ccqppy" href="index.html">src.ccqppy</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverAPGD" href="#src.ccqppy.solvers.CCQPSolverAPGD">CCQPSolverAPGD</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solution" href="#src.ccqppy.solvers.CCQPSolverAPGD.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solution_converged" href="#src.ccqppy.solvers.CCQPSolverAPGD.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverAPGD.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solution_residual" href="#src.ccqppy.solvers.CCQPSolverAPGD.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solution_time" href="#src.ccqppy.solvers.CCQPSolverAPGD.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGD.solve" href="#src.ccqppy.solvers.CCQPSolverAPGD.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation">CCQPSolverAPGDAntiRelaxation</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_converged" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_residual" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_time" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solve" href="#src.ccqppy.solvers.CCQPSolverAPGDAntiRelaxation.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD" href="#src.ccqppy.solvers.CCQPSolverBBPGD">CCQPSolverBBPGD</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solution" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solution_converged" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solution_residual" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solution_time" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGD.solve" href="#src.ccqppy.solvers.CCQPSolverBBPGD.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf" href="#src.ccqppy.solvers.CCQPSolverBBPGDf">CCQPSolverBBPGDf</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solution" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_converged" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_residual" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solution_time" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBBPGDf.solve" href="#src.ccqppy.solvers.CCQPSolverBBPGDf.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverBase" href="#src.ccqppy.solvers.CCQPSolverBase">CCQPSolverBase</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.name" href="#src.ccqppy.solvers.CCQPSolverBase.name">name</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solution" href="#src.ccqppy.solvers.CCQPSolverBase.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solution_converged" href="#src.ccqppy.solvers.CCQPSolverBase.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverBase.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solution_residual" href="#src.ccqppy.solvers.CCQPSolverBase.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solution_time" href="#src.ccqppy.solvers.CCQPSolverBase.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverBase.solve" href="#src.ccqppy.solvers.CCQPSolverBase.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB">CCQPSolverMPRGPBB</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_converged" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_residual" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_time" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverMPRGPBB.solve" href="#src.ccqppy.solvers.CCQPSolverMPRGPBB.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverPGD" href="#src.ccqppy.solvers.CCQPSolverPGD">CCQPSolverPGD</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solution" href="#src.ccqppy.solvers.CCQPSolverPGD.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solution_converged" href="#src.ccqppy.solvers.CCQPSolverPGD.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverPGD.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solution_residual" href="#src.ccqppy.solvers.CCQPSolverPGD.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solution_time" href="#src.ccqppy.solvers.CCQPSolverPGD.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverPGD.solve" href="#src.ccqppy.solvers.CCQPSolverPGD.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ccqppy.solvers.CCQPSolverSPG" href="#src.ccqppy.solvers.CCQPSolverSPG">CCQPSolverSPG</a></code></h4>
+<ul class="">
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.cost_func" href="#src.ccqppy.solvers.CCQPSolverSPG.cost_func">cost_func</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solution" href="#src.ccqppy.solvers.CCQPSolverSPG.solution">solution</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solution_converged" href="#src.ccqppy.solvers.CCQPSolverSPG.solution_converged">solution_converged</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solution_num_matrix_vector_multiplications" href="#src.ccqppy.solvers.CCQPSolverSPG.solution_num_matrix_vector_multiplications">solution_num_matrix_vector_multiplications</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solution_residual" href="#src.ccqppy.solvers.CCQPSolverSPG.solution_residual">solution_residual</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solution_time" href="#src.ccqppy.solvers.CCQPSolverSPG.solution_time">solution_time</a></code></li>
+<li><code><a title="src.ccqppy.solvers.CCQPSolverSPG.solve" href="#src.ccqppy.solvers.CCQPSolverSPG.solve">solve</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

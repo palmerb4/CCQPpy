@@ -97,6 +97,17 @@ class IdentityProjOp(ProjOpBase):
         """
         return np.zeros(self.dim)
 
+    def projected_gradient(self, x, g):
+        """Return free gradient and chopped gradient at x. Their sum is the projected gradient
+
+        Args:
+            x (np.array): location
+            g (np.array): gradient
+
+        Returns:
+            g_p (tuple): (free gradient, chopped gradient)
+        """
+
     def __call__(self, x):
         """Projection operation for the space
         {x in R^n}
@@ -323,9 +334,11 @@ class BoxProjOp(ProjOpBase):
         free_g = np.zeros(self.dim)
         chopped_g = np.zeros(self.dim)
         normal = self.normal_vector(x)
+        x_proj = self.__call__(x)
 
         for i in range(self.dim):
-            if np.isclose(x[i], self.upper_bound[i]) or np.isclose(x[i], self.lower_bound[i]): # In the active set
+            if np.isclose(x[i], self.upper_bound[i]) or x[i]>self.upper_bound[i] \
+                or np.isclose(x[i], self.lower_bound[i] or x[i]<self.upper_bound[i]): # In the active set
                 free_g[i] = 0
                 chopped_g[i] = g[i] - np.min((normal[i]*g[i],0))*(normal[i])
             else:                                     # In the free set
@@ -400,21 +413,6 @@ class SphereProjOp(ProjOpBase):
             g_p (tuple): (free gradient, chopped gradient)
         """
         raise NotImplementedError("Cone proximal gradient not implemented, yet.")
-        # free_g = np.zeros(self.dim)
-        # chopped_g = np.zeros(self.dim)
-        # normal = self.normal_vector(x)
-
-        # if np.isclose(self.radius, np.linalg.norm(x)): # In the active set
-        #     for i in range(self.dim):
-
-        # for i in range(self.dim):
-        #     if np.isclose(x[i], self.upper_bound[i]) or np.isclose(x[i], self.lower_bound[i]): # In the active set
-        #         free_g[i] = 0
-        #         chopped_g[i] = g[i] - np.min((normal[i]@g[i],0))*(normal[i])
-        #     else:                                     # In the free set
-        #         free_g[i] = g[i]
-        #         chopped_g[i] = 0
-        # return (free_g,chopped_g)
 
     def __call__(self, x):
         """Projection operation for the space
