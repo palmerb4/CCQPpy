@@ -192,7 +192,7 @@ class CCQPSolverPGD(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
-   
+
 
 class CCQPSolverAPGD(CCQPSolverBase):
     """Concrete implementation of the APGD algorithm
@@ -796,7 +796,7 @@ class CCQPSolverBBPGDf(CCQPSolverBase):
                     gmin = np.copy(gk)
 
                 # apply fallback upon stagnation
-                if alpha  < 10 * np.finfo(float).eps:
+                if alpha < 10 * np.finfo(float).eps:
                     xk = convex_proj_op(xmin - gd * gmin)
 
                 # update variables for iteration
@@ -955,7 +955,7 @@ class CCQPSolverSPG(CCQPSolverBase):
             # lines 10-18 of popisil 2018
             xi = (fmax - fk) / dkdotAdk
             beta = -dkdotgk / dkdotAdk
-            betahat = tau * beta + np.sqrt((tau** 2) * (beta** 2) + 2 * xi)
+            betahat = tau * beta + np.sqrt((tau ** 2) * (beta ** 2) + 2 * xi)
             betak = np.random.uniform(low=sig1, high=min(betahat, sig2))
 
             xk += betak * dk
@@ -997,6 +997,7 @@ class CCQPSolverSPG(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
+
 
 class CCQPSolverMPRGP(CCQPSolverBase):
     """Concrete implementation of the MPRGP algorithm
@@ -1075,7 +1076,7 @@ class CCQPSolverMPRGP(CCQPSolverBase):
             # compute the initial BB step size
             alpha_bb = gk.dot(gk) / (gk.dot(A.dot(gk)))
             mv_count += 1
-            
+
             # Line 4 of algorith 5.8
             delta_xk = np.isclose(xk, convex_proj_op(xk))
             p = delta_xk * gk
@@ -1092,7 +1093,8 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                 delta_xk = np.isclose(xk, convex_proj_op(xk))
                 psi_xk = delta_xk * gk
                 n_xk = convex_proj_op.normal_vector(xk)
-                beta_xk = (1 - delta_xk) * (gk - np.min([0, n_xk.dot(gk)]) * n_xk)
+                beta_xk = (1 - delta_xk) * \
+                    (gk - np.min([0, n_xk.dot(gk)]) * n_xk)
                 if beta_xk.dot(beta_xk) < psi_xk.dot(psi_xk):
                     # Precomputations
                     Ap = A.dot(p)
@@ -1105,8 +1107,8 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                     y = xk - alpha_cg * p
 
                     # alternative to line 9 of algorithm 5.8
-                    # here, we use recursive bisection to determine a step size 
-                    # within the feasible solution space. 
+                    # here, we use recursive bisection to determine a step size
+                    # within the feasible solution space.
                     alpha_f = alpha_cg + 10 * np.finfo(float).eps
                     while True:
                         yf = xk - alpha_f * p
@@ -1129,17 +1131,18 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                         p = psi_y - beta * p
                     else:
                         # extension step using BB step size
-                        # line 15. note, there is a typo. g = g - alphaf Ap. means 
+                        # line 15. note, there is a typo. g = g - alphaf Ap. means
                         # g^{k+1/2} = g^k - alphaf Ap.
                         xkphalf = xk - alpha_f * p
-                        gkphalf = gk - alpha_f * Ap 
+                        gkphalf = gk - alpha_f * Ap
 
                         # line 16 with BB step
                         xkdiff = xkphalf - xk
                         gkdiff = gkphalf - gk
-                        alpha = xkdiff.dot(xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
+                        alpha = xkdiff.dot(
+                            xkdiff) / (xkdiff.dot(gkdiff) + 10 * np.finfo(float).eps)
                         xkp1 = convex_proj_op(xkphalf - alpha * gkphalf)
-                        
+
                         # reset the GC algorithm
                         # line 17
                         gkp1 = A.dot(xkp1) + b
@@ -1160,10 +1163,11 @@ class CCQPSolverMPRGP(CCQPSolverBase):
 
                     # line 21 but with BB step
                     xkp1 = convex_proj_op(xk - alpha_bb * gk)
-                    
+
                     xkdiff = xkp1 - xk
                     gkdiff = gkp1 - gk
-                    alpha_bb = xkdiff.dot(xkdiff) / (xkdiff.dot(A.dot(xkdiff)) + 10 * np.finfo(float).eps)
+                    alpha_bb = xkdiff.dot(
+                        xkdiff) / (xkdiff.dot(A.dot(xkdiff)) + 10 * np.finfo(float).eps)
 
                     gk = A.dot(xk) + b
                     mv_count += 1
@@ -1176,7 +1180,7 @@ class CCQPSolverMPRGP(CCQPSolverBase):
                     p = np.copy(psi_xkp1)
 
                 res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
-                        (xkp1 - convex_proj_op(xkp1 - gd * gkp1)))
+                                     (xkp1 - convex_proj_op(xkp1 - gd * gkp1)))
                 if res < self.desired_residual_tol:
                     break
 
@@ -1216,6 +1220,8 @@ class CCQPSolverMPRGP(CCQPSolverBase):
     @property
     def solution_num_matrix_vector_multiplications(self):
         return self._solution_num_matrix_vector_mults
+
+
 class CCQPSolverMPRGPBB(CCQPSolverBase):
     """Concrete implementation of the MPRGP algorithm
     from Alg 5.8 of OPTIMAL QUADRATIC PROGRAMMING ALGORITHMS
@@ -1277,33 +1283,35 @@ class CCQPSolverMPRGPBB(CCQPSolverBase):
 
         # Step 0: Initialization (Alg 5.8 Polyak's algorithm)
         k = 0
-        alpha_bar = 2/np.linalg.norm(A,np.inf)
+        alpha_bar = 2/np.linalg.norm(A, np.inf)
         xk = convex_proj_op(x0)
         gk = A.dot(xk) - b
-        alpha_bb = 0 # gk.dot(gk) / (gk.dot(A.dot(gk)))
-        psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,gk) 
-        p = psi_xk 
+        alpha_bb = 0  # gk.dot(gk) / (gk.dot(A.dot(gk)))
+        psi_xk, beta_xk = convex_proj_op.projected_gradient(xk, gk)
+        p = psi_xk
         mv_count += 2
 
         # check convergence, line 17 and Eq 25 of Mazhar 2015
         gd = 1e-6
         res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
                              (xk - convex_proj_op(xk - gd * gk)))
-        
+
         while res >= self.desired_residual_tol:
             bnorm = beta_xk.dot(beta_xk)
-            psinorm =psi_xk.dot(psi_xk)
+            psinorm = psi_xk.dot(psi_xk)
             if v:
-                print(f"It-{k}\tres={res:.5f}\t||psixk||={psinorm:.7f}\t||bnorm||={psinorm:.7f}")
-            if v==2:
-                print(f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
-            if bnorm< (Gamma**2)*psinorm:
+                print(
+                    f"It-{k}\tres={res:.5f}\t||psixk||={psinorm:.7f}\t||bnorm||={psinorm:.7f}")
+            if v == 2:
+                print(
+                    f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
+            if bnorm < (Gamma**2)*psinorm:
                 # Step 1. Trial conjugate gradient step
                 alpha_cg = gk.dot(p)/(p.dot(A.dot(gk))+1e-10)
-                mv_count+=1
+                mv_count += 1
                 y = xk - alpha_cg*p
                 xkp1 = np.copy(xk)
-                
+
                 alpha_f = alpha_cg + 10*np.finfo(float).eps
                 while True:
                     yf = xk - alpha_f * p
@@ -1312,51 +1320,62 @@ class CCQPSolverMPRGPBB(CCQPSolverBase):
                     else:
                         alpha_f *= 0.8
                 if v:
-                    print(f"It-{k} Step.1: alpha_cg={alpha_cg:.10f},\talpha_f={alpha_f:.10f}")
-                if v==2:
-                    print(f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
-                if alpha_cg <= alpha_f: # Step 2. Conjugate gradient step
+                    print(
+                        f"It-{k} Step.1: alpha_cg={alpha_cg:.10f},\talpha_f={alpha_f:.10f}")
+                if v == 2:
+                    print(
+                        f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
+                if alpha_cg <= alpha_f:  # Step 2. Conjugate gradient step
                     xk = y
                     gk = gk - alpha_cg*A.dot(p)
-                    psi_y, beta_y = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    psi_y, beta_y = convex_proj_op.projected_gradient(
+                        xk, A.dot(y)-b)
                     beta = psi_y.dot(A.dot(p))/(p.dot(A.dot(p))+1e-10)
                     p = psi_y - beta*p
-                    mv_count+=3
+                    mv_count += 3
                     if v:
-                        print(f"It-{k} Step.2: beta={beta:.5f}\t ||psi_y||={np.linalg.norm(psi_y):.4f}\t ||beta_y||={np.linalg.norm(beta_y):.4f}")
-                    if v==2:
-                        print(f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
-                else: # Step 3. Expansion step
+                        print(
+                            f"It-{k} Step.2: beta={beta:.5f}\t ||psi_y||={np.linalg.norm(psi_y):.4f}\t ||beta_y||={np.linalg.norm(beta_y):.4f}")
+                    if v == 2:
+                        print(
+                            f"xk: {xk}\t gk: {gk}\t psi(xk): {psi_xk}\t beta(xk): {beta_xk}")
+                else:  # Step 3. Expansion step
                     xk = xk - alpha_f*p
                     gk = gk - alpha_f*A.dot(p)
-                    psi_xhalf, beta_half = convex_proj_op.projected_gradient(xk,A.dot(y)-b)
+                    psi_xhalf, beta_half = convex_proj_op.projected_gradient(
+                        xk, A.dot(y)-b)
                     xk = convex_proj_op(xk-alpha_bar*psi_xhalf)
                     gk = A.dot(xk)-b
-                    mv_count+=2
-                    psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                    mv_count += 2
+                    psi_xk, beta_xk = convex_proj_op.projected_gradient(
+                        xk, A.dot(xk)-b)
                     p = psi_xk
                     if v:
-                        print(f"It-{k} Step.3: beta={alpha_f:.5f}\t ||psi_xhalf||={np.linalg.norm(psi_xhalf):.4f}\t ||beta_half||={np.linalg.norm(beta_half):.4f}")
-            else: # Step 4. Proportioning step
+                        print(
+                            f"It-{k} Step.3: beta={alpha_f:.5f}\t ||psi_xhalf||={np.linalg.norm(psi_xhalf):.4f}\t ||beta_half||={np.linalg.norm(beta_half):.4f}")
+            else:  # Step 4. Proportioning step
                 if alpha_bb == 0:
-                    alpha_bb = gk.dot(gk) / ( gk.dot(A.dot(gk)) +1e-10)
+                    alpha_bb = gk.dot(gk) / (gk.dot(A.dot(gk)) + 1e-10)
                 else:
-                    alpha_bb = (xk-xkp1)@(xk-xkp1)/((xk-xkp1)@A.dot(xk-xkp1)+1e-10)
+                    alpha_bb = (xk-xkp1)@(xk-xkp1) / \
+                        ((xk-xkp1)@A.dot(xk-xkp1)+1e-10)
                 xkp1 = np.copy(xk)
                 gk = A.dot(xk)-b
                 xk = convex_proj_op(xk-alpha_bb*gk)
-                psi_xk, beta_xk = convex_proj_op.projected_gradient(xk,A.dot(xk)-b)
+                psi_xk, beta_xk = convex_proj_op.projected_gradient(
+                    xk, A.dot(xk)-b)
                 p = psi_xk
                 mv_count += 2
                 if v:
-                    print(f"It-{k} Step.3: alpha_bb={alpha_bb:.4f}\t ||psi_xk||={np.linalg.norm(psi_xk):.4f}\t ||beta_xk||={np.linalg.norm(beta_xk):.4f}")
-                
+                    print(
+                        f"It-{k} Step.3: alpha_bb={alpha_bb:.4f}\t ||psi_xk||={np.linalg.norm(psi_xk):.4f}\t ||beta_xk||={np.linalg.norm(beta_xk):.4f}")
+
                 if mv_count >= self.max_matrix_vector_multiplications:
                     break
-            
+
             k = k+1
             res = np.linalg.norm(1.0 / (3 * num_unknowns * gd) *
-                    (xk - convex_proj_op(xk - gd * gk)))
+                                 (xk - convex_proj_op(xk - gd * gk)))
 
         self._solution = np.copy(xk)
         self._solution_converged = mv_count < self.max_matrix_vector_multiplications

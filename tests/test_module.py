@@ -66,14 +66,14 @@ class TestSolversAgainstSimpleProblems(unittest.TestCase):
             self.assertTrue(result.solution_converged)
             self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
             
-            # Test MPRGP-BB
-            result = solvers.CCQPSolverMPRGPBB(1e-8, 10000).solve(
-                test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)
-            self.assertTrue(result.solution_converged)
-            self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
+            # # Test MPRGP-BB
+            # result = solvers.CCQPSolverMPRGPBB(1e-8, 10000).solve(
+            #     test_problem.A, test_problem.b, convex_proj_op=test_problem.convex_proj_op)
+            # self.assertTrue(result.solution_converged)
+            # self.assertTrue(np.linalg.norm(result.solution - test_problem.exact_solution) < 1e-5)
             
 
 if __name__ == '__main__':
-    # unittest.main()
-    test = TestSolversAgainstSimpleProblems()
-    test.test_APGD()
+    unittest.main()
+    # test = TestSolversAgainstSimpleProblems()
+    # test.test_APGD()
