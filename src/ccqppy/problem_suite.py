@@ -65,6 +65,7 @@ class UnconstrainedSPD1(TestProblemBase):
     def exact_solution(self):
         return np.array([1, 0, 1])
 
+
 class UnconstrainedSPD2(TestProblemBase):
     """A simple 3D unconstrained, strictly convex QP problem"""
 
@@ -90,7 +91,7 @@ class UnconstrainedSPD2(TestProblemBase):
     @property
     def exact_solution(self):
         return np.array([1, 0, 1])
-    
+
 
 class BoxConstrainedSPD(TestProblemBase):
     """A simple 3D constrained, strictly convex QP problem 
@@ -146,6 +147,7 @@ class ThinBoxConstrainedSPD(TestProblemBase):
     @property
     def exact_solution(self):
         return np.array([1, 0, 1])
+
 
 class ActiveBoxConstrainedSPD(TestProblemBase):
     """A simple 3D constrained, strictly convex QP problem 

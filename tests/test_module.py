@@ -74,6 +74,6 @@ class TestSolversAgainstSimpleProblems(unittest.TestCase):
             
 
 if __name__ == '__main__':
-    unittest.main()
-    # test = TestSolversAgainstSimpleProblems()
-    # test.test_APGD()
+    # unittest.main()
+    test = TestSolversAgainstSimpleProblems()
+    test.test_APGD()
