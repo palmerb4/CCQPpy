@@ -28,20 +28,22 @@ git clone https://github.com/palmerb4/CCQPpy.git
 
 ## **Example Usage:**
 ```python
+import numpy as np
+from ccqppy import solvers
+from ccqppy import solution_spaces as ss
+
 A = np.array([[2, -1, 0], [-1, 2, -1], [0, -1, 2]])
 exact_x = np.array([1, 0, 1])
 b = -A.dot(exact_x)
-solution_space = BoxProjOp(3,np.array([-2,-2,-4]),np.array([2,2,5]))
+convex_proj_op = ss.BoxProjOp(3,np.array([-2,-2,-4]),np.array([2,2,5]))
 
 desired_tol = 1e-10
 max_mv_mults = 5000
 solver = solvers.CCQPSolverSPG(desired_tol, max_mv_mults)
-result = solver.solve(A, b, convex_proj_op=solution_space)
+result = solver.solve(A, b, convex_proj_op=convex_proj_op)
 
 print("Solution:\t",result.solution)
 print("Exact solution:\t",exact_x)
-print("Is the solution correct?\t",np.all(np.isclose(
-    result.solution, tpn.exact_solution)))
 print("Converged?\t",result.solution_converged)
 print("Solution time:\t",result.solution_time)
 print("Residual:\t",result.solution_residual)
@@ -51,7 +53,6 @@ print("Number of matrix, vector multiplications:\t",result.solution_num_matrix_v
 solving SPG
 Solution:	 [ 1.0000000e+00 -5.5187636e-11  1.0000000e+00]
 Exact solution:	 [1 0 1]
-Is the solution correct?	 True
 Converged?	 True
 Solution time:	 0.0059010982513427734
 Residual:	 7.804688171132893e-11
