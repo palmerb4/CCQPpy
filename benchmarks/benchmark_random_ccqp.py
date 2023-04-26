@@ -58,7 +58,7 @@ class BenchmarkRandomCCQP:
 
         A = wishart.rvs(problem_size, np.eye(
             problem_size), size=1, random_state=seed)
-        unconstrained_solution = 1 - 2 * np.random.rand(problem_size) 
+        unconstrained_solution = 1 - 2 * np.random.rand(problem_size)
         b = -A.dot(unconstrained_solution)
         return (A, b)
 
@@ -146,7 +146,8 @@ class BenchmarkRandomCCQP:
 
     def process_results(self):
         self.plot('wall-clock time [s]', self._problem_time, True)
-        self.plot('number of matrix-vector multiplications', self._problem_num_matrix_vector_mults, True)
+        self.plot('number of matrix-vector multiplications',
+                  self._problem_num_matrix_vector_mults, True)
         self.plot('solution residual', self._problem_residual, False)
         print("")
 
@@ -176,11 +177,11 @@ def benchmark_single_constraint():
                                  for dim in problem_sizes])
     proj_ops_to_benchmark.append([ss.BoxProjOp(dim) for dim in problem_sizes])
 
-
     benchmark = BenchmarkRandomCCQP(
         num_random_trials, solvers_to_benchmark, proj_ops_to_benchmark)
     benchmark.run()
     benchmark.process_results()
+
 
 def benchmark_disjoint_constraints():
     problem_sizes = np.arange(3, 13, 3)
@@ -206,7 +207,7 @@ def benchmark_disjoint_constraints():
                                   for dim in problem_sizes])
     proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.SphereProjOp(3)] * (dim // 3))
                                  for dim in problem_sizes])
-    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.BoxProjOp(3)] * (dim // 3)) 
+    proj_ops_to_benchmark.append([ss.DisjointProjOp(*[ss.BoxProjOp(3)] * (dim // 3))
                                   for dim in problem_sizes])
 
     benchmark = BenchmarkRandomCCQP(
